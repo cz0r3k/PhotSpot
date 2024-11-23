@@ -1,9 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35514.174 d17.12
+VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mobile_app", "mobile_app\mobile_app.csproj", "{42DA85B4-E46C-4BAB-B1EB-708B99CFE9B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "server_api", "server_api\server_api.csproj", "{AE7FBA1A-EA3E-4160-BB72-BAD31CFCEB5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "web_admin", "web_admin\web_admin.csproj", "{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42DA85B4-E46C-4BAB-B1EB-708B99CFE9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42DA85B4-E46C-4BAB-B1EB-708B99CFE9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42DA85B4-E46C-4BAB-B1EB-708B99CFE9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42DA85B4-E46C-4BAB-B1EB-708B99CFE9B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7FBA1A-EA3E-4160-BB72-BAD31CFCEB5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7FBA1A-EA3E-4160-BB72-BAD31CFCEB5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7FBA1A-EA3E-4160-BB72-BAD31CFCEB5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7FBA1A-EA3E-4160-BB72-BAD31CFCEB5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
