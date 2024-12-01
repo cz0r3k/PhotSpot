@@ -1,0 +1,25 @@
+﻿@page "/grpc"
+@rendermode InteractiveServer
+@using GrpcGreeter
+@inject Greeter.GreeterClient GreeterClient
+
+
+<PageTitle>grpc test</PageTitle>
+
+<h1>grpc</h1>
+
+<p role="status">Response: @response</p>
+
+<input type="text" @bind="message" class="form-control" />
+
+<button class="btn btn-primary" @onclick="SendGrpcRequest">Click me</button>
+
+@code {
+    private string message = "type name";
+    private string response = "";
+
+    private async Task SendGrpcRequest()
+    {
+        response = (await GreeterClient.SayHelloAsync(new HelloRequest { Name = message })).Message;    
+    }
+}

@@ -1,5 +1,5 @@
 using Grpc.Core;
-using server_api;
+using GrpcGreeter;
 
 namespace server_api.Services
 {
