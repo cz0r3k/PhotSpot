@@ -3,10 +3,10 @@
 @using GrpcGreeter
 @inject Greeter.GreeterClient GreeterClient
 
-
 <PageTitle>grpc test</PageTitle>
 
 <h1>grpc</h1>
+
 
 <p role="status">Response: @response</p>
 
@@ -14,12 +14,30 @@
 
 <button class="btn btn-primary" @onclick="SendGrpcRequest">Click me</button>
 
+<button class="btn btn-primary" @onclick="SendGrpcRequest">Click me pls</button>
+
+<AuthorizeView>
+    <Authorized>
+        <p>Witaj, @context.User.Identity.Name!</p>
+        <p>mail: @context.User.Claims.Where(s => s.Type.Contains("email")).Select(x => x.Value).First()</p>
+        @foreach (var claim in context.User.Claims)
+        {
+            <p>@claim.Type: @claim.Value</p>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>Proszę zalogować się!</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
 @code {
     private string message = "type name";
     private string response = "";
 
     private async Task SendGrpcRequest()
     {
-        response = (await GreeterClient.SayHelloAsync(new HelloRequest { Name = message })).Message;    
+        response = (await GreeterClient.SayHelloAsync(new HelloRequest { Name = message })).Message;
     }
+
 }
