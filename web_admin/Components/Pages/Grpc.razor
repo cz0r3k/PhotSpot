@@ -8,36 +8,34 @@
 <h1>grpc</h1>
 
 
-<p role="status">Response: @response</p>
+<p role="status">Response: @_response</p>
 
-<input type="text" @bind="message" class="form-control" />
+<input type="text" @bind="_message" placeholder="type name" class="form-control" />
 
 <button class="btn btn-primary" @onclick="SendGrpcRequest">Click me</button>
 
-<button class="btn btn-primary" @onclick="SendGrpcRequest">Click me pls</button>
-
 <AuthorizeView>
     <Authorized>
-        <p>Witaj, @context.User.Identity.Name!</p>
-        <p>mail: @context.User.Claims.Where(s => s.Type.Contains("email")).Select(x => x.Value).First()</p>
         @foreach (var claim in context.User.Claims)
         {
             <p>@claim.Type: @claim.Value</p>
         }
     </Authorized>
     <NotAuthorized>
-        <p>Proszę zalogować się!</p>
+        <p>Please login!</p>
     </NotAuthorized>
 </AuthorizeView>
 
 
 @code {
-    private string message = "type name";
-    private string response = "";
+    private string _message = "";
+    private string _response = "";
 
     private async Task SendGrpcRequest()
     {
-        response = (await GreeterClient.SayHelloAsync(new HelloRequest { Name = message })).Message;
+        if (!string.IsNullOrEmpty(_message))
+        {
+            _response = (await GreeterClient.SayHelloAsync(new HelloRequest { Name = _message })).Message;
+        }
     }
-
 }

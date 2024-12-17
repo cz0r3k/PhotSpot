@@ -1,21 +1,19 @@
 using Grpc.Core;
 using GrpcGreeter;
+using Microsoft.AspNetCore.Authorization;
 
 namespace server_api.Services
 {
-    public class GreeterService : Greeter.GreeterBase
+    [Authorize]
+    public class GreeterService(ILogger<GreeterService> logger, IHttpContextAccessor httpContextAccessor)
+        : Greeter.GreeterBase
     {
-        private readonly ILogger<GreeterService> _logger;
-        public GreeterService(ILogger<GreeterService> logger)
-        {
-            _logger = logger;
-        }
-
         public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
         {
+            var user = httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(c => c.Type.Contains("email"));
             return Task.FromResult(new HelloReply
             {
-                Message = "Hello " + request.Name
+                Message = $"Hello {user?.Value} aka {request.Name}"
             });
         }
     }
