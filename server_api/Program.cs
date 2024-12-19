@@ -1,18 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using server_api;
 using server_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppIdentityDbContext>(x =>
-{
-    x.UseSqlite("DataSource=appIdentity.db");
-    x.ConfigureWarnings(warnings =>
-        warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
-});
+    x.UseSqlite("DataSource=appIdentity.db")
+);
 builder.Services.AddIdentityCore<AppUser>(o => o.User.RequireUniqueEmail = true).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppIdentityDbContext>();
 builder.Services.AddGrpc();

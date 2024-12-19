@@ -11,7 +11,7 @@ using server_api;
 namespace server_api.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20241219141815_InitalCreate")]
+    [Migration("20241219152617_InitalCreate")]
     partial class InitalCreate
     {
         /// <inheritdoc />

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace server_api;
 
@@ -13,7 +12,7 @@ internal class AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> optio
         base.OnModelCreating(builder);
         var adminRole = new IdentityRole
         {
-            Id = Guid.NewGuid().ToString(),
+            Id = "9f68937c-dff0-4e17-96e5-d16254df9f24",
             Name = "Admin",
             NormalizedName = "ADMIN",
             ConcurrencyStamp = null
