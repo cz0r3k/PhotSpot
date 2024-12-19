@@ -1,5 +1,6 @@
 ﻿using web_admin.Components;
 using GrpcGreeter;
+using GrpcUser;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -19,6 +20,13 @@ builder.Services
         var token = await provider.GetTokenAsync(context.CancellationToken);
         metadata.Add("Authorization", $"Bearer {token}");
     });
+
+builder.Services.AddGrpcClient<UserManagement.UserManagementClient>(options => { options.Address = new Uri("https://localhost:7244"); }).AddCallCredentials(async (context, metadata, serviceProvider) =>
+{
+    var provider = serviceProvider.GetRequiredService<ITokenProvider>();
+    var token = await provider.GetTokenAsync(context.CancellationToken);
+    metadata.Add("Authorization", $"Bearer {token}");
+});
 
 builder.Services.AddAuthentication(options =>
     {

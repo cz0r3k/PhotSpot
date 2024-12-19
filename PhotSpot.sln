@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{5397B68B-B0E5-4FA9-A291-5F3A7227F150}"
 	ProjectSection(SolutionItems) = preProject
 		greet.proto = greet.proto
+		Protos\user.proto = Protos\user.proto
 	EndProjectSection
 EndProject
 Global

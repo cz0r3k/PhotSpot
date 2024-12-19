@@ -1,0 +1,29 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "GrpcUser";
+
+package user;
+
+service UserManagement{
+  rpc Register (RegisterRequest) returns (RegisterReply);
+  rpc RegisterAdmin (RegisterRequest) returns (RegisterReply);
+  rpc IsRegistered (google.protobuf.Empty) returns (IsRegisterReply);
+  rpc IsAdmin (google.protobuf.Empty) returns (IsAdminReply);
+}
+
+message RegisterRequest{
+  string name = 1;
+}
+
+message RegisterReply {
+  bool message = 1;
+}
+
+message IsRegisterReply {
+  bool message = 1;
+}
+
+message IsAdminReply {
+  bool message = 1;
+}

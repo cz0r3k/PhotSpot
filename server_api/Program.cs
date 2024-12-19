@@ -1,9 +1,20 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+using server_api;
 using server_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddDbContext<AppIdentityDbContext>(x =>
+{
+    x.UseSqlite("DataSource=appIdentity.db");
+    x.ConfigureWarnings(warnings =>
+        warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+});
+builder.Services.AddIdentityCore<AppUser>(o => o.User.RequireUniqueEmail = true).AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppIdentityDbContext>();
 builder.Services.AddGrpc();
 
 var r = new StreamReader("GoogleSigningKeys.json");
@@ -13,7 +24,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        IssuerSigningKey = (new JsonWebKeySet(googleSigningKey)).Keys.First(),
+        IssuerSigningKeys = new JsonWebKeySet(googleSigningKey).Keys,
         ValidAudience = builder.Configuration["Authentication:Google:ClientId"]!,
         ValidIssuer = "https://accounts.google.com",
     };
@@ -33,8 +44,11 @@ var app = builder.Build();
 
 app.UseGrpcWeb();
 app.UseCors();
+app.UseMiddleware<RoleClaimsMiddleware>();
+app.UseAuthorization();
 
 app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<UserManagementService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGet("/",
     () =>
         "This gRPC service is gRPC-Web enabled, CORS enabled, and is callable from browser apps using the gRPC-Web protocol");
