@@ -1,0 +1,88 @@
+﻿@page "/grpc"
+@rendermode InteractiveServer
+@using Google.Protobuf.WellKnownTypes
+@using GrpcGreeter
+@using GrpcUser
+@inject Greeter.GreeterClient GreeterClient
+@inject UserManagement.UserManagementClient UserManagementClient
+<PageTitle>grpc test</PageTitle>
+
+<h1>grpc</h1>
+
+
+<p role="status">Response: @_response</p>
+
+<input type="text" @bind="_message" placeholder="type name" class="form-control" />
+
+<button class="btn btn-primary" @onclick="SendGrpcRequest">Click me</button>
+<button class="btn btn-primary" @onclick="RegisterUser">Register</button>
+<button class="btn btn-primary" @onclick="RegisterUserAdmin">Register as Admin</button>
+
+<AuthorizeView>
+    <Authorized>
+        @foreach (var claim in context.User.Claims)
+        {
+            <p>@claim.Type: @claim.Value</p>
+        }
+        <p>Is user registered: @_isRegistered</p>
+        <p>Is user admin: @_isAdmin</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Please login!</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    private string _message = "";
+    private string _response = "";
+    private bool _isAdmin;
+    private bool _isRegistered;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isAdmin = await IsAdmin();
+        _isRegistered = await IsRegistered();
+    }
+
+    private async Task SendGrpcRequest()
+    {
+        if (!string.IsNullOrEmpty(_message))
+        {
+            _response = (await GreeterClient.SayHelloAsync(new HelloRequest { Name = _message })).Message;
+        }
+    }
+
+    private async Task RegisterUser()
+    {
+        if (!string.IsNullOrEmpty(_message))
+        {
+            var response = (await UserManagementClient.RegisterAsync(new RegisterRequest{ Name = _message })).Message;
+            if (response)
+            {
+                Console.WriteLine("User registered");
+            }
+        }
+    }
+    private async Task RegisterUserAdmin()
+    {
+        if (!string.IsNullOrEmpty(_message))
+        {
+            var response = (await UserManagementClient.RegisterAdminAsync(new RegisterRequest{ Name = _message })).Message;
+            if (response)
+            {
+                Console.WriteLine("User registered");
+            }
+        }
+    }
+
+    private async Task<bool> IsAdmin()
+    {
+        return (await UserManagementClient.IsAdminAsync(new Empty())).Message;
+    }
+
+    private async Task<bool> IsRegistered()
+    {
+        return (await UserManagementClient.IsRegisteredAsync(new Empty())).Message;
+    }
+}
