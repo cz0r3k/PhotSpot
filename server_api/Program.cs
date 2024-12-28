@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppIdentityDbContext>(x =>
     x.UseSqlite("DataSource=appIdentity.db")
 );
-builder.Services.AddIdentityCore<AppUser>(o => o.User.RequireUniqueEmail = true).AddRoles<IdentityRole>()
+builder.Services.AddIdentityCore<AppUser>(o => o.User.RequireUniqueEmail = true).AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppIdentityDbContext>();
 builder.Services.AddGrpc();
 

@@ -2,7 +2,7 @@
 
 namespace server_api;
 
-internal class AppUser: IdentityUser
+internal class AppUser: IdentityUser<Guid>
 {
     
 }
