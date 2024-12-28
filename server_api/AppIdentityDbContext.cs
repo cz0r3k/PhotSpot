@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using server_api.Identity;
 
-namespace server_api.Identity;
+namespace server_api;
 
 internal class AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
     : IdentityDbContext<AppUser, AppRole, Guid>(options)

@@ -8,10 +8,10 @@ using server_api.Identity;
 
 #nullable disable
 
-namespace server_api.Migrations
+namespace server_api.Migrations.identity
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20241228151623_InitialCreate")]
+    [Migration("20241228161808_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

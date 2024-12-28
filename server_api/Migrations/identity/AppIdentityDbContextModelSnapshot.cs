@@ -7,7 +7,7 @@ using server_api.Identity;
 
 #nullable disable
 
-namespace server_api.Migrations
+namespace server_api.Migrations.identity
 {
     [DbContext(typeof(AppIdentityDbContext))]
     partial class AppIdentityDbContextModelSnapshot : ModelSnapshot

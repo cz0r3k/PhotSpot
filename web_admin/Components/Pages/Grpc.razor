@@ -62,6 +62,7 @@
             {
                 Console.WriteLine("User registered");
             }
+            _isRegistered = await IsRegistered();
         }
     }
     private async Task RegisterUserAdmin()
@@ -73,6 +74,8 @@
             {
                 Console.WriteLine("User registered");
             }
+            _isRegistered = await IsRegistered();
+            _isAdmin = await IsAdmin();
         }
     }
 
