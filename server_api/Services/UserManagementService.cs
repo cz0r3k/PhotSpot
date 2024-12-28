@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using RegisterRequest = GrpcUser.RegisterRequest;
 using Google.Protobuf.WellKnownTypes;
+using server_api.Identity;
 
 namespace server_api.Services;
 

@@ -1,22 +1,21 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace server_api;
+namespace server_api.Identity;
 
 internal class AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
-    : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>(options)
+    : IdentityDbContext<AppUser, AppRole, Guid>(options)
 {
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        var adminRole = new IdentityRole<Guid>
+        var adminRole = new AppRole
         {
             Id = new Guid("01940d8f-13eb-7747-ace7-fe90b7010875"),
             Name = "Admin",
             NormalizedName = "ADMIN",
             ConcurrencyStamp = null
         };
-        builder.Entity<IdentityRole<Guid>>().HasData(adminRole);
+        builder.Entity<AppRole>().HasData(adminRole);
     }
 }    
