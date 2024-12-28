@@ -23,20 +23,18 @@ namespace server_api.Migrations.data
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<TimeSpan>("MinimalTimespan")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("QrCodePath")
-                        .IsRequired()
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -129,6 +127,10 @@ namespace server_api.Migrations.data
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")

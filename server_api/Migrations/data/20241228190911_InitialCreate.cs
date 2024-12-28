@@ -16,7 +16,8 @@ namespace server_api.Migrations.data
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Username = table.Column<string>(type: "TEXT", nullable: false)
+                    Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,11 +29,10 @@ namespace server_api.Migrations.data
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
                     OwnerId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    MinimalTimespan = table.Column<TimeSpan>(type: "TEXT", nullable: false),
-                    QrCodePath = table.Column<string>(type: "TEXT", nullable: false)
+                    MinimalTimespan = table.Column<TimeSpan>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
