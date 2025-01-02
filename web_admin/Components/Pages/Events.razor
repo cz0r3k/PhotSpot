@@ -1,0 +1,29 @@
+﻿@page "/events"
+
+@rendermode InteractiveServer
+
+@using GrpcEvent
+
+@inject Event.EventClient EventClient
+
+<PageTitle>Events</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <input type="text" @bind="_eventName" placeholder="type name" class="form-control" />
+        <button class="btn btn-primary" @onclick="CreateEvent">Create event</button>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+
+    private string _eventName = "";
+
+    private async Task CreateEvent()
+    {
+        if (!string.IsNullOrEmpty(_eventName))
+        {
+            await EventClient.CreateAsync(new CreateRequest { Name = _eventName, Duration = EventDuration.DurationDay, MinimalTimespan = EventMinimalTimespan.Timespan1H});
+        }
+    }
+}

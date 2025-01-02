@@ -1,0 +1,34 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcEvent";
+
+package event;
+
+service Event{
+  rpc Create (CreateRequest) returns (CreateReply);
+}
+
+enum EventDuration {
+  DURATION_DAY = 0;
+  DURATION_2DAYS = 1;
+  DURATION_WEEK = 2;
+  DURATION_12H = 3;
+}
+
+enum EventMinimalTimespan {
+  TIMESPAN_1H = 0;
+  TIMESPAN_6H = 1;
+  TIMESPAN_12H = 2;
+  TIMESPAN_1DAY = 3;
+  TIMESPAN_2DAYS = 4;
+}
+
+message CreateRequest{
+  string name = 1;
+  EventDuration duration = 2;
+  EventMinimalTimespan minimal_timespan = 3;
+}
+
+message CreateReply {
+  bool message = 1;
+}
