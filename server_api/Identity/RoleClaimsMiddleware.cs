@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
-namespace server_api;
+namespace server_api.Identity;
 
 internal class RoleClaimsMiddleware(RequestDelegate next)
 {
