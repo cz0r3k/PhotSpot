@@ -8,7 +8,8 @@
 cd server_api
 dotnet user-secrets init
 dotnet user-secrets set "Authentication:Google:ClientId" "<client-id>"
-dotnet ef database update
+dotnet ef database update --context AppIdentityDbContext
+dotnet ef database update --context AppDbContext
 ```
 
 ### Web admin
