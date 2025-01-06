@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using server_api;
 using server_api.Identity;
 using server_api.Services;
+using server_api.ServicesGRPC;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,9 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", corsPolicyBuilder =>
         .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
 }));
 
+builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddScoped<IPhotoEventService, PhotoEventService>();
+
 var app = builder.Build();
 
 app.UseGrpcWeb();
@@ -50,9 +54,9 @@ app.UseCors();
 app.UseMiddleware<RoleClaimsMiddleware>();
 app.UseAuthorization();
 
-app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
-app.MapGrpcService<UserManagementService>().EnableGrpcWeb().RequireCors("AllowAll");
-app.MapGrpcService<EventService>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<GreeterServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<UserManagementServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<PhotoEventServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGet("/",
     () =>
         "This gRPC service is gRPC-Web enabled, CORS enabled, and is callable from browser apps using the gRPC-Web protocol");
