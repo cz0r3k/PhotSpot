@@ -20,10 +20,13 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="../Protos/greet.proto" GrpcServices="Client" />
-    <Protobuf Include="../Protos/user.proto" GrpcServices="Client" />
-    <Protobuf Include="../Protos/event.proto" GrpcServices="Client" />
-  </ItemGroup>
+<!--  <ItemGroup>-->
+<!--    <Protobuf Include="../Protos/greet.proto" GrpcServices="Client" />-->
+<!--    <Protobuf Include="../Protos/user.proto" GrpcServices="Client" />-->
+<!--    <Protobuf Include="../Protos/event.proto" GrpcServices="Client" />-->
+<!--  </ItemGroup>-->
 
+  <ItemGroup>
+    <ProjectReference Include="..\util\util.csproj" />
+  </ItemGroup>
 </Project>

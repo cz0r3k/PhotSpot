@@ -1,11 +1,15 @@
 ﻿syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
 
 option csharp_namespace = "GrpcEvent";
 
 package event;
 
-service Event{
+service PhotoEvent{
   rpc Create (CreateRequest) returns (CreateReply);
+  rpc GetDetails (UUID) returns (DetailsReply);
 }
 
 enum EventDuration {
@@ -23,6 +27,14 @@ enum EventMinimalTimespan {
   TIMESPAN_2DAYS = 4;
 }
 
+enum EventPhotoExpirationTimespan {
+  EXPIRATION_TIMESPAN_1H = 0;
+  EXPIRATION_TIMESPAN_6H = 1;
+  EXPIRATION_TIMESPAN_12H = 2;
+  EXPIRATION_TIMESPAN_1DAY = 3;
+  EXPIRATION_TIMESPAN_2DAYS = 4;
+}
+
 message CreateRequest{
   string name = 1;
   EventDuration duration = 2;
@@ -30,5 +42,23 @@ message CreateRequest{
 }
 
 message CreateReply {
-  bool message = 1;
+  UUID id = 1;
+}
+
+message UUID {
+  string value = 1;
+}
+
+message DetailsReply {
+    optional EventDetails details = 1;
+}
+
+message EventDetails {
+  UUID id = 1;
+  string name = 2;
+  UUID owner = 3;
+  google.protobuf.Timestamp creation_date = 4;
+  google.protobuf.Timestamp expiration_date = 5;
+  google.protobuf.Duration minimal_timespan = 6;
+  google.protobuf.Duration photo_expiration = 7;
 }

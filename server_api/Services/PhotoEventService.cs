@@ -8,18 +8,29 @@ internal class PhotoEventService(
     ILogger<UserManagementService> logger,
     AppDbContext appDbContext) : IPhotoEventService
 {
-    public async Task<bool> Create(string email, PhotoEventArgs photoEventArgs)
+    public async Task<Guid?> Create(string email, PhotoEventArgs photoEventArgs)
     {
         var user = await appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-        if (user == null) return false;
+        if (user is null) return null;
         var photoEvent = photoEventArgs.ToPhotoEvent(user);
         await appDbContext.Events.AddAsync(photoEvent);
-        var qrGenerator = new QRCodeGenerator();
-        var eventPayload = photoEvent.ToPhotoEventPayload();
-        var qrCodeData = qrGenerator.CreateQrCode(eventPayload.ToString(), QRCodeGenerator.ECCLevel.Q);
-        var qrCode = new PngByteQRCode(qrCodeData);
-        await File.WriteAllBytesAsync($"events/{photoEvent.Id}.png", qrCode.GetGraphic(20));
+        await appDbContext.SaveChangesAsync();
+        await CreateQrCode(photoEvent.ToPhotoEventPayload());
         logger.LogInformation($"Event {photoEvent.Id} created");
-        return true;
+        return photoEvent.Id;
+    }
+
+    public Task<PhotoEvent?> GetDetails(Guid id)
+    {
+        var photoEvent = appDbContext.Events.Include(e => e.Owner).FirstOrDefaultAsync(e => e.Id == id);
+        return photoEvent;
+    }
+
+    private static async Task CreateQrCode(PhotoEventPayload photoEventPayload)
+    {
+        var qrGenerator = new QRCodeGenerator();
+        var qrCodeData = qrGenerator.CreateQrCode(photoEventPayload.ToString(), QRCodeGenerator.ECCLevel.Q);
+        var qrCode = new PngByteQRCode(qrCodeData);
+        await File.WriteAllBytesAsync($"events/{photoEventPayload.EventId}.png", qrCode.GetGraphic(20));
     }
 }

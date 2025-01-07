@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using server_api.Identity;
+using server_api;
 
 #nullable disable
 
 namespace server_api.Migrations.identity
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20241228161808_InitialCreate")]
+    [Migration("20250107114814_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

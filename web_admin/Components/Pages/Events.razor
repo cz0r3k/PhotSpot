@@ -4,13 +4,14 @@
 
 @using GrpcEvent
 
-@inject Event.EventClient EventClient
+@inject PhotoEvent.PhotoEventClient EventClient
+@inject NavigationManager NavigationManager
 
 <PageTitle>Events</PageTitle>
 
 <AuthorizeView>
     <Authorized>
-        <input type="text" @bind="_eventName" placeholder="type name" class="form-control" />
+        <input type="text" @bind="_eventName" placeholder="type name" class="form-control"/>
         <button class="btn btn-primary" @onclick="CreateEvent">Create event</button>
     </Authorized>
 </AuthorizeView>
@@ -23,7 +24,10 @@
     {
         if (!string.IsNullOrEmpty(_eventName))
         {
-            await EventClient.CreateAsync(new CreateRequest { Name = _eventName, Duration = EventDuration.DurationDay, MinimalTimespan = EventMinimalTimespan.Timespan1H});
+            var reply = await EventClient.CreateAsync(new CreateRequest { Name = _eventName, Duration = EventDuration.DurationDay, MinimalTimespan = EventMinimalTimespan.Timespan1H });
+            var id = Guid.Parse(reply.Id.Value);
+            NavigationManager.NavigateTo($"/event/{id}");
         }
     }
+
 }
