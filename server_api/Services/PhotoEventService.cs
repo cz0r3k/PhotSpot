@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QRCoder;
 using server_api.Data;
+using server_api.Services.QrManager;
 using util.PhotoEvent;
 using PhotoEvent = server_api.Data.PhotoEvent;
 
@@ -8,7 +9,8 @@ namespace server_api.Services;
 
 internal class PhotoEventService(
     ILogger<UserManagementService> logger,
-    AppDbContext appDbContext) : IPhotoEventService
+    AppDbContext appDbContext,
+    IQrManager qrManager) : IPhotoEventService
 {
     public async Task<Guid?> Create(string email, PhotoEventArgs photoEventArgs)
     {
@@ -36,11 +38,11 @@ internal class PhotoEventService(
         return photoEvents;
     }
 
-    private static async Task CreateQrCode(PhotoEventPayload photoEventPayload)
+    private async Task CreateQrCode(PhotoEventPayload photoEventPayload)
     {
         var qrGenerator = new QRCodeGenerator();
         var qrCodeData = qrGenerator.CreateQrCode(photoEventPayload.ToString(), QRCodeGenerator.ECCLevel.Q);
-        var qrCode = new PngByteQRCode(qrCodeData);
-        await File.WriteAllBytesAsync($"events/{photoEventPayload.EventId}.png", qrCode.GetGraphic(20));
+        var qrCode = new PngByteQRCode(qrCodeData).GetGraphic(20);
+        await qrManager.Save(photoEventPayload.EventId, qrCode);
     }
 }
