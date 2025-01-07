@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+             xmlns:sensors="clr-namespace:Microsoft.Maui.Devices.Sensors;assembly=Microsoft.Maui.Essentials"
+             x:Class="QRtest.MapPage">
+
+    <maps:Map x:Name="map">
+        <x:Arguments>
+            <maps:MapSpan>
+                <x:Arguments>
+                    <sensors:Location>
+                        <x:Arguments>
+                            <x:Double>52.2296756</x:Double>
+                            <x:Double>21.0122287</x:Double>
+                        </x:Arguments>
+                    </sensors:Location>
+                    <x:Double>0.01</x:Double>
+                    <x:Double>0.01</x:Double>
+                </x:Arguments>
+            </maps:MapSpan>
+        </x:Arguments>
+
+        <maps:Map.Pins>
+            <maps:Pin Label="Pałac Kultury i Nauki"
+                      Address="Plac Defilad 1, 00-901 Warszawa, Polska"
+                      Type="Place">
+                <maps:Pin.Location>
+                    <sensors:Location>
+                        <x:Arguments>
+                            <x:Double>52.231838</x:Double>
+                            <x:Double>21.006724</x:Double>
+                        </x:Arguments>
+                    </sensors:Location>
+                </maps:Pin.Location>
+            </maps:Pin>
+            <maps:Pin Label="Wydział Elektroniki i Technik Informacyjnych PW"
+                      Address="ul. Nowowiejska 15/19, 00-665 Warszawa, Polska"
+                      Type="Place">
+                <maps:Pin.Location>
+                    <sensors:Location>
+                        <x:Arguments>
+                            <x:Double>52.221542</x:Double>
+                            <x:Double>21.007219</x:Double>
+                        </x:Arguments>
+                    </sensors:Location>
+                </maps:Pin.Location>
+            </maps:Pin>
+        </maps:Map.Pins>
+        
+    </maps:Map>
+    
+</ContentPage>

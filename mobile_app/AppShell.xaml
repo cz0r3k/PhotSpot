@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="mobile_app.AppShell"
+    x:Class="QRtest.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:mobile_app"
-    Shell.FlyoutBehavior="Flyout"
-    Title="mobile_app">
+    xmlns:local="clr-namespace:QRtest"
+    Shell.FlyoutBehavior="Disabled"
+    Title="QRtest">
 
+    <!--
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
+    -->
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TabBarItemStyle" TargetType="ShellItem">
+                <Setter Property="Shell.BackgroundColor" Value="#32a6a8" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <TabBar>
+        <Tab Title="Map" Icon="map.png" Style="{StaticResource TabBarItemStyle}">
+            <ShellContent ContentTemplate="{DataTemplate local:MapPage}" />
+        </Tab>
+        <Tab Title="Scan QR" Icon="qr.png" Style="{StaticResource TabBarItemStyle}">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Account" Icon="user.png" Style="{StaticResource TabBarItemStyle}">
+            <ShellContent ContentTemplate="{DataTemplate local:AccountPage}" />
+        </Tab>
+    </TabBar>
 
 </Shell>

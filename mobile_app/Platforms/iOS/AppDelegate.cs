@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace mobile_app
+namespace QRtest
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

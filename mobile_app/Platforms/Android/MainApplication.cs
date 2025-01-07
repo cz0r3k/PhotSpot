@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace mobile_app
+namespace QRtest
 {
     [Application]
     public class MainApplication : MauiApplication
