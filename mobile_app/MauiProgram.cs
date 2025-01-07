@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using Camera.MAUI;
 
-namespace mobile_app
+namespace QRtest
 {
     public static class MauiProgram
     {
@@ -9,6 +10,8 @@ namespace mobile_app
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCameraView()
+                .UseMauiMaps()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

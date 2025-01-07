@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace mobile_app
+namespace QRtest
 {
     public class Program
     {
