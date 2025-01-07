@@ -36,6 +36,15 @@ public class PhotoEvent
             PhotoExpiration = PhotoExpiration
         };
     }
+
+    public PhotoEventSimple ToPhotoEventSimple()
+    {
+        return new PhotoEventSimple
+        {
+            Id = Id,
+            Name = Name,
+        };
+    }
 }
 
 public class PhotoEventPayload : PayloadGenerator.Payload

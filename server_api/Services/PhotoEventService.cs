@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QRCoder;
 using server_api.Data;
+using util.PhotoEvent;
+using PhotoEvent = server_api.Data.PhotoEvent;
 
 namespace server_api.Services;
 
@@ -24,6 +26,14 @@ internal class PhotoEventService(
     {
         var photoEvent = appDbContext.Events.Include(e => e.Owner).FirstOrDefaultAsync(e => e.Id == id);
         return photoEvent;
+    }
+
+    public async Task<IEnumerable<PhotoEventSimple>> GetActiveEvents()
+    {
+        var photoEvents =
+            (await appDbContext.Events.Where(e => e.ExpirationDate > DateTime.Now).ToListAsync()).Select(e =>
+                e.ToPhotoEventSimple());
+        return photoEvents;
     }
 
     private static async Task CreateQrCode(PhotoEventPayload photoEventPayload)

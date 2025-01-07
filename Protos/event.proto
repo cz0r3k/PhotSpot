@@ -10,6 +10,7 @@ package event;
 service PhotoEvent{
   rpc Create (CreateRequest) returns (CreateReply);
   rpc GetDetails (UUID) returns (DetailsReply);
+  rpc GetActiveEvents (google.protobuf.Empty) returns (SimpleReply);
 }
 
 enum EventDuration {
@@ -61,4 +62,13 @@ message EventDetails {
   google.protobuf.Timestamp expiration_date = 5;
   google.protobuf.Duration minimal_timespan = 6;
   google.protobuf.Duration photo_expiration = 7;
+}
+
+message SimpleReply {
+  repeated EventSimple event = 1;
+}
+
+message EventSimple {
+  UUID id = 1;
+  string name = 2;
 }

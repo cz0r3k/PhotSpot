@@ -41,20 +41,25 @@
             <th>@_photoEventDetails.PhotoExpiration</th>
         </tr>
     </table>
-    <img src="/events/@(EventId).png" alt="event qr code"/>
+    <img src="/events/@(EventId).png" alt="event qr code" height="800" width="800"/>
+    <button class="btn btn-primary" @onclick="UploadPhoto">Upload photo</button>
 }
 
 
 
 @code {
-    [Parameter]
-    public Guid EventId { get; set; }
+    [Parameter] public Guid EventId { get; set; }
 
     private PhotoEventDetails? _photoEventDetails;
-    
+
     protected override async Task OnInitializedAsync()
     {
-        DetailsReply eventDetails = await PhotoEventClient.GetDetailsAsync(new UUID { Value = EventId.ToString() });
+        var eventDetails = await PhotoEventClient.GetDetailsAsync(new UUID { Value = EventId.ToString() });
         _photoEventDetails = PhotoEventDetails.FromDetailsReply(eventDetails);
     }
+
+    private void UploadPhoto()
+    {
+    }
+
 }

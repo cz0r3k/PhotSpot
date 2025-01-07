@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using GrpcEvent;
 using Microsoft.AspNetCore.Authorization;
@@ -24,5 +25,16 @@ internal class PhotoEventServiceGrpc(
     {
         var photoEvent = await photoEventService.GetDetails(Guid.Parse(request.Value));
         return photoEvent == null ? new DetailsReply {  } : photoEvent.ToPhotoEventDetails().ToDetailsReply();
+    }
+
+    public override async Task<SimpleReply> GetActiveEvents(Empty request, ServerCallContext context)
+    {
+        var photoEvents = await photoEventService.GetActiveEvents();
+        var reply = new SimpleReply();
+        foreach (var photoEvent in photoEvents)
+        {
+            reply.Event.Add(photoEvent.ToEventSimple());
+        }
+        return reply;
     }
 }
