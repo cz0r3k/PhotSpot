@@ -1,7 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Google.Protobuf.WellKnownTypes;
-using GrpcEvent;
-using QRCoder;
 using util.PhotoEvent;
 
 namespace server_api.Data;
@@ -44,18 +41,6 @@ public class PhotoEvent
             Id = Id,
             Name = Name,
         };
-    }
-}
-
-public class PhotoEventPayload : PayloadGenerator.Payload
-{
-    public Guid EventId { get; init; }
-    public required string Name { get; init; }
-    public DateTime ExpirationDate { get; init; }
-
-    public override string ToString()
-    {
-        return Newtonsoft.Json.JsonConvert.SerializeObject(this);
     }
 }
 

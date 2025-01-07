@@ -2,7 +2,7 @@ using Grpc.Core;
 using GrpcGreeter;
 using Microsoft.AspNetCore.Authorization;
 using QRCoder;
-using server_api.Data;
+using util.PhotoEvent;
 
 namespace server_api.ServicesGRPC
 {
