@@ -41,7 +41,9 @@
             <th>@_photoEventDetails.PhotoExpiration</th>
         </tr>
     </table>
-    <img src="/events/@(EventId).png" alt="event qr code" height="800" width="800"/>
+    //<img src="/events/@(EventId).png" alt="event qr code" height="800" width="800"/>
+    <img src="http://localhost:10000/devstoreaccount1/events/@(EventId).png" alt="event qr code" height="800" width="800"/>
+    
     <button class="btn btn-primary" @onclick="UploadPhoto">Upload photo</button>
 }
 

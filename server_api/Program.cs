@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -47,7 +48,9 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", corsPolicyBuilder =>
 
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IPhotoEventService, PhotoEventService>();
-builder.Services.AddScoped<IQrManager, QrManagerFile>();
+//builder.Services.AddScoped<IQrManager, QrManagerFile>();
+builder.Services.AddScoped<IQrManager, QrManagerBlob>();
+builder.Services.AddSingleton(_ => new BlobServiceClient("UseDevelopmentStorage=true"));
 
 
 var app = builder.Build();
