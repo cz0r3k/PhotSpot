@@ -11,4 +11,7 @@
       --blobPort 10000
       --location /data
       --debug /data/debug.log
-      
+  imgproxy:
+    image: ghcr.io/imgproxy/imgproxy:latest
+    ports:
+      - "8080:8080"
