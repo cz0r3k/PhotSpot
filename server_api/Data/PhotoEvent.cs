@@ -6,7 +6,8 @@ namespace server_api.Data;
 public class PhotoEvent
 {
     public Guid Id { get; set; }
-    [StringLength(maximumLength: 32)] public required string Name { get; set; }
+    [StringLength(maximumLength: 32)]
+    public required string Name { get; set; }
     public required User Owner { get; set; }
     public required DateTime CreationDate { get; set; }
     public required DateTime ExpirationDate { get; set; }
@@ -50,10 +51,12 @@ public class PhotoEventArgs
 
     public PhotoEvent ToPhotoEvent(User user)
     {
+        var now = DateTime.Now;
+        now = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
         return new PhotoEvent
         {
-            Name = Name, Owner = user, CreationDate = DateTime.Now,
-            ExpirationDate = DateTime.Now.AddDays(1),
+            Name = Name, Owner = user, CreationDate = now,
+            ExpirationDate = now.AddDays(1),
             MinimalTimespan = TimeSpan.FromHours(2), PhotoExpiration = TimeSpan.FromHours(4)
         };
     }
