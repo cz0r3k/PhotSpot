@@ -3,7 +3,7 @@ using System.Reflection.Metadata.Ecma335;
 using Camera.MAUI.ZXing;
 using Grpc.Core;
 using Grpc.Net.Client;
-using GrpcClientTest;
+using GrpcPhotos;
 
 namespace QRtest
 {
@@ -185,9 +185,21 @@ namespace QRtest
                 var result = ImageSource.FromStream(() => stream);
                 //snapPreview.Source = result;
 
-                using (var channel = GrpcChannel.ForAddress("http://192.168.0.206:5091"))
+                var socketHttpHandler = new SocketsHttpHandler
                 {
-                    var client = new Greeter.GreeterClient(channel);
+                    SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+                    {
+                        RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+                    },
+                    EnableMultipleHttp2Connections = true
+                };
+
+                using (var channel = GrpcChannel.ForAddress("https://192.168.0.30:7244", new GrpcChannelOptions
+                {
+                    HttpHandler = socketHttpHandler
+                }))
+                {
+                    var client = new PhotosA.PhotosAClient(channel);
                     using (var call = client.UploadPhoto())
                     {
                         var buffer = new byte[4096];
