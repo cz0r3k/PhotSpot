@@ -17,10 +17,71 @@ namespace server_api.Migrations.data
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
-            modelBuilder.Entity("server_api.Data.Event", b =>
+            modelBuilder.Entity("server_api.Data.LastUploadedPhoto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PhotoEventId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoEventId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("LastUploadedPhotos");
+                });
+
+            modelBuilder.Entity("server_api.Data.Photo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LikesCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("PhotoEventId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhotoEventId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Photos");
+                });
+
+            modelBuilder.Entity("server_api.Data.PhotoEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ExpirationDate")
@@ -37,69 +98,14 @@ namespace server_api.Migrations.data
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("TEXT");
 
+                    b.Property<TimeSpan>("PhotoExpiration")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("server_api.Data.LastUploadedPhoto", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("LastUploadedPhotos");
-                });
-
-            modelBuilder.Entity("server_api.Data.Photo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LikesCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UploadDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("server_api.Data.PhotoLike", b =>
@@ -142,7 +148,45 @@ namespace server_api.Migrations.data
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("server_api.Data.Event", b =>
+            modelBuilder.Entity("server_api.Data.LastUploadedPhoto", b =>
+                {
+                    b.HasOne("server_api.Data.PhotoEvent", "PhotoEvent")
+                        .WithMany("LastUploadedPhotos")
+                        .HasForeignKey("PhotoEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("server_api.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PhotoEvent");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("server_api.Data.Photo", b =>
+                {
+                    b.HasOne("server_api.Data.PhotoEvent", "PhotoEvent")
+                        .WithMany("Photos")
+                        .HasForeignKey("PhotoEventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("server_api.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PhotoEvent");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("server_api.Data.PhotoEvent", b =>
                 {
                     b.HasOne("server_api.Data.User", "Owner")
                         .WithMany()
@@ -151,44 +195,6 @@ namespace server_api.Migrations.data
                         .IsRequired();
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("server_api.Data.LastUploadedPhoto", b =>
-                {
-                    b.HasOne("server_api.Data.Event", "Event")
-                        .WithMany("LastUploadedPhotos")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("server_api.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("server_api.Data.Photo", b =>
-                {
-                    b.HasOne("server_api.Data.Event", "Event")
-                        .WithMany("Photos")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("server_api.Data.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("server_api.Data.PhotoLike", b =>
@@ -210,16 +216,16 @@ namespace server_api.Migrations.data
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("server_api.Data.Event", b =>
+            modelBuilder.Entity("server_api.Data.Photo", b =>
+                {
+                    b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("server_api.Data.PhotoEvent", b =>
                 {
                     b.Navigation("LastUploadedPhotos");
 
                     b.Navigation("Photos");
-                });
-
-            modelBuilder.Entity("server_api.Data.Photo", b =>
-                {
-                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

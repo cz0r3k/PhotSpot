@@ -3,7 +3,7 @@
 public class Photo
 {
     public Guid Id { get; set; }
-    public required Event Event { get; set; }
+    public required PhotoEvent PhotoEvent { get; set; }
     public required User User { get; set; }
     public string Path { get; set; }
     public DateTime UploadDate { get; set; }

@@ -1,73 +1,45 @@
-﻿using System.Security.Claims;
-using Grpc.Core;
-using GrpcUser;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using RegisterRequest = GrpcUser.RegisterRequest;
-using Google.Protobuf.WellKnownTypes;
+﻿using Microsoft.AspNetCore.Identity;
+using server_api.Data;
 using server_api.Identity;
 
 namespace server_api.Services;
 
-[Authorize]
 internal class UserManagementService(
     ILogger<UserManagementService> logger,
-    IHttpContextAccessor httpContextAccessor,
-    UserManager<AppUser> userManager) : UserManagement.UserManagementBase
+    UserManager<AppUser> userManager,
+    AppDbContext appDbContext) : IUserManagementService
 {
-    public override async Task<RegisterReply> Register(RegisterRequest request, ServerCallContext context)
+    public async Task<AppUser?> RegisterNewUser(string email, string username)
     {
-        var email = httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Email)!;
+        // TODO add email and username validation
         var user = await userManager.FindByEmailAsync(email);
-        if (user != null)
-        {
-            logger.LogInformation($"User {email} is already registered.");
-            return new RegisterReply { Message = false };
-        }
-        user = new AppUser()
-        {
-            UserName = request.Name,
-            Email = email,
-        };
+        if (user != null) return null;
+        user = new AppUser { Email = email, UserName = username };
         await userManager.CreateAsync(user);
-        logger.LogInformation($"User {email} is now registered.");
-        return new RegisterReply { Message = true };
+        await appDbContext.Users.AddAsync(new User {Email = email, Username = username});
+        await appDbContext.SaveChangesAsync();
+        logger.LogInformation($"User {email} registered");
+        return user;
     }
-    
-    public override async Task<RegisterReply> RegisterAdmin(RegisterRequest request, ServerCallContext context)
+
+    public async Task<AppUser?> RegisterNewAdmin(string email, string username)
     {
-        var email = httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Email)!;
-        var user = await userManager.FindByEmailAsync(email);
-        if (user != null)
-        {
-            logger.LogInformation($"User {email} is already registered.");
-            return new RegisterReply { Message = false };
-        }
-        user = new AppUser()
-        {
-            UserName = request.Name,
-            Email = email,
-        };
-        await userManager.CreateAsync(user);
+        var user = await RegisterNewUser(email, username);
+        if (user == null) return null;
         await userManager.AddToRoleAsync(user, "Admin");
-        logger.LogInformation($"User {email} is now registered as administrator.");
-        return new RegisterReply { Message = true };
+        logger.LogInformation($"User {email} registered as admin");
+        return user;
     }
 
-    public override async Task<IsRegisterReply> IsRegistered(Empty request, ServerCallContext context)
+    public async Task<bool> IsAdmin(string email)
     {
-        return new IsRegisterReply{Message = await GetUser(httpContextAccessor.HttpContext!.User) != null};
+        var user = await userManager.FindByEmailAsync(email);
+        return user != null && (await userManager.IsInRoleAsync(user, "Admin"));
     }
 
-    public override async Task<IsAdminReply> IsAdmin(Empty request, ServerCallContext context)
+    public async Task<bool> IsRegistered(string email)
     {
-        var user = await GetUser(httpContextAccessor.HttpContext!.User);
-        return new IsAdminReply{Message = user != null && (await userManager.GetRolesAsync(user)).Contains("Admin")};
-    }
-
-    private async Task<AppUser?> GetUser(ClaimsPrincipal principal)
-    {
-        var email = principal.FindFirstValue(ClaimTypes.Email)!;
-        return await userManager.FindByEmailAsync(email);
+        var user = await userManager.FindByEmailAsync(email);
+        return user != null;
     }
 }

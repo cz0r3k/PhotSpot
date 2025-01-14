@@ -1,0 +1,61 @@
+﻿@page "/events"
+@attribute [Authorize]
+
+@rendermode InteractiveServer
+
+@using Google.Protobuf.WellKnownTypes
+@using GrpcEvent
+@using Microsoft.AspNetCore.Authorization
+@using util.PhotoEvent
+
+@inject PhotoEvent.PhotoEventClient EventClient
+@inject NavigationManager NavigationManager
+
+<PageTitle>Events</PageTitle>
+
+
+<input type="text" @bind="_eventName" placeholder="type name" class="form-control"/>
+<button class="btn btn-primary" @onclick="CreateEvent">Create event</button>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Event name</th>
+        <th>Id</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    @foreach (var photoEvent in _photoEvents)
+    {
+        <tr>
+        <th>@photoEvent.Name</th>
+        <th><a href="/event/@(photoEvent.Id)">@photoEvent.Id</a></th>
+        </tr>
+    }
+    
+    </tbody>
+</table>
+
+@code {
+
+    private string _eventName = "";
+    private List<PhotoEventSimple> _photoEvents = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var reply = await EventClient.GetActiveEventsAsync(new Empty());
+        _photoEvents = reply.Event.Select(PhotoEventSimple.FromEventSimple).ToList();
+    }
+
+    private async Task CreateEvent()
+    {
+        if (!string.IsNullOrEmpty(_eventName))
+        {
+            var reply = await EventClient.CreateAsync(new CreateRequest { Name = _eventName, Duration = EventDuration.DurationDay, MinimalTimespan = EventMinimalTimespan.Timespan1H });
+            var id = Guid.Parse(reply.Id.Value);
+            NavigationManager.NavigateTo($"/event/{id}");
+        }
+    }
+
+}

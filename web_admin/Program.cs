@@ -1,9 +1,11 @@
-﻿using web_admin.Components;
+﻿using GrpcEvent;
+using web_admin.Components;
 using GrpcGreeter;
 using GrpcUser;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.Extensions.FileProviders;
 using web_admin;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,12 +23,24 @@ builder.Services
         metadata.Add("Authorization", $"Bearer {token}");
     });
 
-builder.Services.AddGrpcClient<UserManagement.UserManagementClient>(options => { options.Address = new Uri("https://localhost:7244"); }).AddCallCredentials(async (context, metadata, serviceProvider) =>
-{
-    var provider = serviceProvider.GetRequiredService<ITokenProvider>();
-    var token = await provider.GetTokenAsync(context.CancellationToken);
-    metadata.Add("Authorization", $"Bearer {token}");
-});
+builder.Services
+    .AddGrpcClient<UserManagement.UserManagementClient>(options =>
+    {
+        options.Address = new Uri("https://localhost:7244");
+    }).AddCallCredentials(async (context, metadata, serviceProvider) =>
+    {
+        var provider = serviceProvider.GetRequiredService<ITokenProvider>();
+        var token = await provider.GetTokenAsync(context.CancellationToken);
+        metadata.Add("Authorization", $"Bearer {token}");
+    });
+
+builder.Services.AddGrpcClient<PhotoEvent.PhotoEventClient>(options => { options.Address = new Uri("https://localhost:7244"); })
+    .AddCallCredentials(async (context, metadata, serviceProvider) =>
+    {
+        var provider = serviceProvider.GetRequiredService<ITokenProvider>();
+        var token = await provider.GetTokenAsync(context.CancellationToken);
+        metadata.Add("Authorization", $"Bearer {token}");
+    });
 
 builder.Services.AddAuthentication(options =>
     {
@@ -76,6 +90,11 @@ app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "../server_api/events")),
+    RequestPath = "/events"
+});
 app.MapStaticAssets();
 app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
