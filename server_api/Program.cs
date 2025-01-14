@@ -50,9 +50,12 @@ app.UseCors();
 app.UseMiddleware<RoleClaimsMiddleware>();
 app.UseAuthorization();
 
+app.MapGrpcService<PhotosAService>().AllowAnonymous();
 app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<UserManagementService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGet("/",
     () =>
         "This gRPC service is gRPC-Web enabled, CORS enabled, and is callable from browser apps using the gRPC-Web protocol");
+
+
 app.Run();

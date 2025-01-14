@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcPhotos";
+
+package photos;
+
+service PhotosA {
+  rpc UploadPhoto (stream PhotoChunk) returns (UploadStatus);
+}
+
+message PhotoChunk{
+	bytes data = 1;
+}
+
+message UploadStatus{
+	bool success = 1;
+	string message = 2;
+}
