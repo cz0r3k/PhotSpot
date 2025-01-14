@@ -1,0 +1,65 @@
+﻿@page "/event/{EventId:guid}"
+@attribute [Authorize]
+
+@rendermode InteractiveServer
+@using GrpcEvent
+@using Microsoft.AspNetCore.Authorization
+@using util.PhotoEvent
+@inject PhotoEvent.PhotoEventClient PhotoEventClient
+
+<PageTitle>Event</PageTitle>
+
+@if (_photoEventDetails is not null)
+{
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>@_photoEventDetails.Id</th>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <th>@_photoEventDetails.Name</th>
+        </tr>
+        <tr>
+            <th>Owner</th>
+            <th>@_photoEventDetails.Owner</th>
+        </tr>
+        <tr>
+            <th>CreationDate</th>
+            <th>@_photoEventDetails.CreationDate</th>
+        </tr>
+        <tr>
+            <th>ExpirationDate</th>
+            <th>@_photoEventDetails.ExpirationDate</th>
+        </tr>
+        <tr>
+            <th>MinimalTimespan</th>
+            <th>@_photoEventDetails.MinimalTimespan</th>
+        </tr>
+        <tr>
+            <th>PhotoExpiration</th>
+            <th>@_photoEventDetails.PhotoExpiration</th>
+        </tr>
+    </table>
+    <img src="/events/@(EventId).png" alt="event qr code" height="800" width="800"/>
+    <button class="btn btn-primary" @onclick="UploadPhoto">Upload photo</button>
+}
+
+
+
+@code {
+    [Parameter] public Guid EventId { get; set; }
+
+    private PhotoEventDetails? _photoEventDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var eventDetails = await PhotoEventClient.GetDetailsAsync(new UUID { Value = EventId.ToString() });
+        _photoEventDetails = PhotoEventDetails.FromDetailsReply(eventDetails);
+    }
+
+    private void UploadPhoto()
+    {
+    }
+
+}

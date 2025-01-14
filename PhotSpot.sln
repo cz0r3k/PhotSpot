@@ -13,7 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{5397B6
 	ProjectSection(SolutionItems) = preProject
 		Protos\greet.proto = Protos\greet.proto
 		Protos\user.proto = Protos\user.proto
+		Protos\event.proto = Protos\event.proto
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "util", "util\util.csproj", "{527887EB-32B3-498A-B9F7-CC90226E92CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +37,10 @@ Global
 		{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B79BEB-E3C6-4CF2-A88C-B79AE81BC567}.Release|Any CPU.Build.0 = Release|Any CPU
+		{527887EB-32B3-498A-B9F7-CC90226E92CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{527887EB-32B3-498A-B9F7-CC90226E92CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{527887EB-32B3-498A-B9F7-CC90226E92CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{527887EB-32B3-498A-B9F7-CC90226E92CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

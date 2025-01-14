@@ -9,11 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="../Protos/greet.proto" GrpcServices="Server" />
-    <Protobuf Include="../Protos/user.proto" GrpcServices="Server" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.67.0" />
     <PackageReference Include="Grpc.AspNetCore.Web" Version="2.67.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
@@ -30,8 +25,12 @@
 
   <ItemGroup>
     <Folder Include="Database\" />
-    <Folder Include="Migrations\data\" />
-    <Folder Include="Migrations\identity\" />
+    <Folder Include="events\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\util\util.csproj" />
   </ItemGroup>
 
 </Project>

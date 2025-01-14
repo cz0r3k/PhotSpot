@@ -31,8 +31,10 @@ namespace server_api.Migrations.data
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
                     OwnerId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    MinimalTimespan = table.Column<TimeSpan>(type: "TEXT", nullable: false)
+                    MinimalTimespan = table.Column<TimeSpan>(type: "TEXT", nullable: false),
+                    PhotoExpiration = table.Column<TimeSpan>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,14 +54,14 @@ namespace server_api.Migrations.data
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     UploadDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EventId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    PhotoEventId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LastUploadedPhotos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LastUploadedPhotos_Events_EventId",
-                        column: x => x.EventId,
+                        name: "FK_LastUploadedPhotos_Events_PhotoEventId",
+                        column: x => x.PhotoEventId,
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -76,7 +78,7 @@ namespace server_api.Migrations.data
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    EventId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PhotoEventId = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Path = table.Column<string>(type: "TEXT", nullable: false),
                     UploadDate = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -87,8 +89,8 @@ namespace server_api.Migrations.data
                 {
                     table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_Events_EventId",
-                        column: x => x.EventId,
+                        name: "FK_Photos_Events_PhotoEventId",
+                        column: x => x.PhotoEventId,
                         principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -131,9 +133,9 @@ namespace server_api.Migrations.data
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LastUploadedPhotos_EventId",
+                name: "IX_LastUploadedPhotos_PhotoEventId",
                 table: "LastUploadedPhotos",
-                column: "EventId");
+                column: "PhotoEventId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LastUploadedPhotos_UserId",
@@ -151,9 +153,9 @@ namespace server_api.Migrations.data
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_EventId",
+                name: "IX_Photos_PhotoEventId",
                 table: "Photos",
-                column: "EventId");
+                column: "PhotoEventId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_UserId",
