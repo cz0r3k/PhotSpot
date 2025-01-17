@@ -5,6 +5,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcPhotos;
 using System.Text.Json;
+using util.PhotoEvent;
 
 namespace QRtest
 {
@@ -117,30 +118,31 @@ namespace QRtest
                     loadingIndicator.IsVisible = true;
 
                     string qrContent = args.Result[0].Text;
-                    var jsonDocument = JsonDocument.Parse(qrContent);
+                    var jsonDocument = JsonSerializer.Deserialize<PhotoEventPayload>(qrContent);
 
-                    if (jsonDocument.RootElement.TryGetProperty("EventId", out var eventIdElement))
+                    if (jsonDocument != null)
                     {
+                        barcodeResult.Text = jsonDocument.Name;
 
-                        barcodeResult.Text = $"EventId found: {eventIdElement.GetString()}";
+                        //TODO walidacja czy expired ED
+
                         await Task.Delay(1000);
-
                         await Shell.Current.GoToAsync("TakePhotoPage");
-
-                        //TUTAJ PRZESLANIE DO SERWERA
-                        //{ "EventId":"019426fd-77b2-7b9d-bba2-242991fe6d09","ExpirationDate":"2025-01-02T13:28:53.0421455Z","Version":-1,"EccLevel":-1,"EciMode":0}
-
-                        // TUTAJ ZAPYTANIE PRZESYLANE DALEJ PO GRPC CZY KOD QR OK
-                        // czy logika czy expired po stronie serwera? - zakladam ze przesylamy wszystko dalej 
-                        // a klient dostaje info co to za event - NAZWA
-                        // i BARCODE result to bedzie nazwa eventu i przekierowanie na TAkePhotopage
-
                     }
                     else
                     {
-                        //barcodeResult.Text = "Invalid QR code (1).";
                         await DisplayAlert("Scan QR Code", "Invalid QR code (1).", "OK");
                     }
+
+                    //TUTAJ PRZESLANIE DO SERWERA
+                    //{"ID":"296e2c35e9694850bc710c60b61611f2","N":"aaa","ED":"2025-01-15T20:40:18"}
+
+                    // TUTAJ ZAPYTANIE PRZESYLANE DALEJ PO GRPC CZY KOD QR OK - czy ID exists
+                    // przeslanie tylko ID? i czy valid - i serwer robi check i sprawdza czy valid
+                    // od razu linki do zdjec
+
+
+                    // tablica linkow
                 }
                 catch (JsonException)
                 {
@@ -157,9 +159,6 @@ namespace QRtest
                     loadingIndicator.IsRunning = false;
                     loadingIndicator.IsVisible = false;
                 }
-
-
-
 
             });
         }

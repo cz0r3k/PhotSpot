@@ -36,4 +36,7 @@
 
     <ShellContent Title="Take Photo" ContentTemplate="{DataTemplate local:TakePhotoPage}" 
               Route="TakePhotoPage"/>
+
+    <ShellContent Title="Browse Photos" ContentTemplate="{DataTemplate local:BrowsePage}" 
+          Route="BrowsePage"/>
 </Shell>

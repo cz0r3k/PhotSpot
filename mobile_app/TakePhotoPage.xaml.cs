@@ -188,10 +188,12 @@ namespace QRtest
             }
         }
 
-        private void BrowsePhotos(object sender, EventArgs e)
+        private async void BrowsePhotos(object sender, EventArgs e)
         {
             // todo tutaj najpierw zaciagniecie zdjec z folderu i ladne 
-            DisplayAlert("Browse photos", "Tutaj bedzie obserwacja zdjec", "OK");
+            //DisplayAlert("Browse photos", "Tutaj bedzie obserwacja zdjec", "OK");
+            //await Navigation.PushAsync(new mobile_app.BrowsePage());
+            await Shell.Current.GoToAsync("BrowsePage");
         }
     }
 

@@ -76,6 +76,22 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.21" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <ProjectReference Include="..\util\util.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Compile Update="BrowsePage.xaml.cs">
+	    <DependentUpon>BrowsePage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <MauiXaml Update="BrowsePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
 
 	<!--
 	<ItemGroup>

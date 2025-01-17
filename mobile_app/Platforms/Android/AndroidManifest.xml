@@ -3,11 +3,11 @@
 	<!--
 	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:supportsRtl="true"></application>
 	-->
-	<application android:allowBackup="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true">
+	<application android:allowBackup="true" android:usesCleartextTraffic="true" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round" android:supportsRtl="true">
 		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCdkxec993Z6Pa2dx5phRZN6E7Vbok1OMs" />
 		<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 	</application>
-	
+
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.CAMERA" />
