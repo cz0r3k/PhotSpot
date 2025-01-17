@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
-             x:Class="QRtest.MainPage"
-             Title="Scan QR Code">
+             x:Class="QRtest.TakePhotoPage"
+             Title="Nazwa eventu tutaj bedzie">
 
     <!-- <ScrollView> -->
 
@@ -12,19 +12,22 @@
         Spacing="25"
         VerticalOptions="Center"
         HorizontalOptions="Center">
-        
 
+        <Label x:Name="barcodeResult" FontSize="20" />
         <Grid x:Name="cameraViewContainer">
             <cv:CameraView x:Name="cameraView" WidthRequest="400" HeightRequest="400" 
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
-                        CamerasLoaded="cameraView_CamerasLoaded" BarCodeDetectionEnabled="True"
-                        BarcodeDetected="cameraView_BarcodeDetected"/>
+                        CamerasLoaded="cameraView_CamerasLoaded" />
         </Grid>
 
-        <ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" />
-        
-        <Label x:Name="barcodeResult" FontSize="20" />
+        <Button Text="Take photo" Clicked="TakePhoto" />
+
+        <Button Text="Browse photos" Clicked="BrowsePhotos" />
+
+        <!--  <Image x:Name="myImage" WidthRequest="200" HeightRequest="200" />   BarCodeDetectionEnabled="True"
+                        BarcodeDetected="cameraView_BarcodeDetected"-->
+
 
     </VerticalStackLayout>
 

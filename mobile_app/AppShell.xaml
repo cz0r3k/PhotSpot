@@ -34,4 +34,6 @@
         </Tab>
     </TabBar>
 
+    <ShellContent Title="Take Photo" ContentTemplate="{DataTemplate local:TakePhotoPage}" 
+              Route="TakePhotoPage"/>
 </Shell>

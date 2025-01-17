@@ -6,6 +6,8 @@
         {
             InitializeComponent();
 
+            Routing.RegisterRoute("TakePhotoPage", typeof(TakePhotoPage));
+            Routing.RegisterRoute("MainPage", typeof(MainPage));
             //CurrentItem.TabBarBackgroundColor = Color.FromArgb("#32a6a8");
             //CurrentItem.TabBarForegroundColor = Colors.White;
         }
