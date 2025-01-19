@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -55,16 +56,31 @@ builder.Services.AddSingleton(_ => new BlobServiceClient("UseDevelopmentStorage=
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    await using (var context = scope.ServiceProvider.GetService<AppIdentityDbContext>())
+        context!.Database.EnsureCreated();
+    await using (var context = scope.ServiceProvider.GetService<AppDbContext>())
+        context!.Database.EnsureCreated();
+    var blobServiceClient = scope.ServiceProvider.GetRequiredService<BlobServiceClient>();
+    var blobContainerClient = blobServiceClient.GetBlobContainerClient("events");
+    await blobContainerClient.CreateIfNotExistsAsync();
+    await blobContainerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
+}
+
 app.UseGrpcWeb();
 app.UseCors();
 app.UseMiddleware<RoleClaimsMiddleware>();
 app.UseAuthorization();
 
-app.MapGrpcService<GreeterServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
-app.MapGrpcService<UserManagementServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<PhotosAService>().AllowAnonymous();
+app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<UserManagementService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<PhotoEventServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 
 app.MapGet("/",
     () =>
         "This gRPC service is gRPC-Web enabled, CORS enabled, and is callable from browser apps using the gRPC-Web protocol");
+
+
 app.Run();

@@ -6,17 +6,20 @@
 
 ```bash
 cd server_api
-dotnet user-secrets init
 dotnet user-secrets set "Authentication:Google:ClientId" "<client-id>"
-dotnet ef database update --context AppIdentityDbContext
-dotnet ef database update --context AppDbContext
 ```
 
 ### Web admin
 
 ```bash
 cd web_admin
-dotnet user-secrets init
 dotnet user-secrets set "Authentication:Google:ClientId" "<client-id>"
 dotnet user-secrets set "Authentication:Google:ClientSecret" "<client-secret>"
 ```
+
+## Before every run
+
+```bash
+docker compose up -d
+```
+
