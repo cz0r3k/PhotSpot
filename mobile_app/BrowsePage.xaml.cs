@@ -15,10 +15,10 @@ namespace QRtest
         {
 
             //var imageFiles = Directory.GetFiles(imagePath, "*.jpg");
-            string[] imageFiles = { "http://192.168.0.206:10000/devstoreaccount1/swistaki/swistak3.jpg",
-                                    "http://192.168.0.206:10000/devstoreaccount1/swistaki/swistak5.jpg",
-                                    "http://192.168.0.206:10000/devstoreaccount1/swistaki/swistak6.jpg",
-                                    "http://192.168.0.206:10000/devstoreaccount1/swistaki/swistak7.jpg"};
+            string[] imageFiles = { $"http://{Globals.IP_ADDRESS}:10000/devstoreaccount1/swistaki/swistak3.jpg",
+                                    $"http://{Globals.IP_ADDRESS}:10000/devstoreaccount1/swistaki/swistak5.jpg",
+                                    $"http://{Globals.IP_ADDRESS}:10000/devstoreaccount1/swistaki/swistak6.jpg",
+                                    $"http://{Globals.IP_ADDRESS}:10000/devstoreaccount1/swistaki/swistak7.jpg"};
 
             try
             {

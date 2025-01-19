@@ -151,7 +151,7 @@ namespace QRtest
                         EnableMultipleHttp2Connections = true
                     };
 
-                    using (var channel = GrpcChannel.ForAddress("https://192.168.0.30:7244", new GrpcChannelOptions
+                    using (var channel = GrpcChannel.ForAddress($"https://{Globals.IP_ADDRESS}:7244", new GrpcChannelOptions
                     {
                         HttpHandler = socketHttpHandler
                     }))
