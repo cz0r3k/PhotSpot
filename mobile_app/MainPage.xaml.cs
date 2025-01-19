@@ -70,8 +70,8 @@ namespace QRtest
 
             cameraView = new CameraView
             {
-                WidthRequest = 400,
-                HeightRequest = 400,
+                //WidthRequest = 300,
+                //HeightRequest = 300,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
                 BarCodeDetectionEnabled = true,

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
              x:Class="QRtest.MainPage"
-             Title="Scan QR Code">
+             BackgroundImageSource="scanqr.png">
 
     <!-- <ScrollView> -->
 
@@ -12,14 +12,25 @@
         Spacing="25"
         VerticalOptions="Center"
         HorizontalOptions="Center">
-        
 
-        <Grid x:Name="cameraViewContainer">
-            <cv:CameraView x:Name="cameraView" WidthRequest="400" HeightRequest="400" 
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        CamerasLoaded="cameraView_CamerasLoaded" BarCodeDetectionEnabled="True"
-                        BarcodeDetected="cameraView_BarcodeDetected"/>
+        <Grid x:Name="cameraViewContainer"
+          HorizontalOptions="Center"
+          VerticalOptions="Center"
+          WidthRequest="300"
+          HeightRequest="300">
+
+            <cv:CameraView x:Name="cameraView"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   CamerasLoaded="cameraView_CamerasLoaded"
+                   BarCodeDetectionEnabled="True"
+                   BarcodeDetected="cameraView_BarcodeDetected" />
+
+            <!--<Border Stroke="White"
+                 StrokeThickness="10"
+                 HorizontalOptions="FillAndExpand"
+                 VerticalOptions="FillAndExpand" />-->
+
         </Grid>
 
         <ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" />

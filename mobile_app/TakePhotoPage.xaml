@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:cv="clr-namespace:Camera.MAUI;assembly=Camera.MAUI"
              x:Class="QRtest.TakePhotoPage"
-             Title="Nazwa eventu tutaj bedzie">
+             BackgroundImageSource="takephotoback.png">
 
     <!-- <ScrollView> -->
 

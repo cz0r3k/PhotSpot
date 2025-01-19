@@ -20,16 +20,6 @@ namespace QRtest
                                     "http://192.168.0.206:10000/devstoreaccount1/swistaki/swistak6.jpg",
                                     "http://192.168.0.206:10000/devstoreaccount1/swistaki/swistak7.jpg"};
 
-            ImageContainer.Children.Add(new Label { Text = "Test content", FontSize = 20 });
-            var testImage = new Image
-            {
-                Source = "http://192.168.0.206:10000/devstoreaccount1/swistaki/swistak3.jpg",
-                Aspect = Aspect.AspectFill,
-                HeightRequest = 200
-            };
-
-            ImageContainer.Children.Add(testImage);
-
             try
             {
                 foreach (var file in imageFiles)
@@ -38,7 +28,7 @@ namespace QRtest
                     {
                         Source = file,
                         Aspect = Aspect.AspectFill,
-                        HeightRequest = 200,
+                        //HeightRequest = 200,
                         Margin = new Thickness(0, 0, 0, 10)
                     };
 

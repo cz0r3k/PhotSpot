@@ -21,7 +21,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>mobile_app</ApplicationTitle>
+		<ApplicationTitle>PhotSpot</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.mobile_app</ApplicationId>
@@ -43,10 +43,13 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<!-- <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" /> -->
 
+		<MauiIcon Include="Resources\AppIcon\logo3.svg"/>
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<!-- <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" /> -->
+
+		<MauiSplashScreen Include="Resources\Splash\loading.png"/>
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
