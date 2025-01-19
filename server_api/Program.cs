@@ -74,7 +74,7 @@ app.UseMiddleware<RoleClaimsMiddleware>();
 app.UseAuthorization();
 
 app.MapGrpcService<PhotosAService>().AllowAnonymous();
-app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
+//app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<UserManagementService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<PhotoEventServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 
