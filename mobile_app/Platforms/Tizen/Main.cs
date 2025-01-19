@@ -2,7 +2,7 @@ using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
-namespace mobile_app
+namespace QRtest
 {
     internal class Program : MauiApplication
     {
