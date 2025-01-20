@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using server_api;
 using server_api.Identity;
 using server_api.Services;
+using server_api.Services.PhotosManager;
 using server_api.Services.QrManager;
 using server_api.ServicesGRPC;
 
@@ -51,6 +52,7 @@ builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IPhotoEventService, PhotoEventService>();
 //builder.Services.AddScoped<IQrManager, QrManagerFile>();
 builder.Services.AddScoped<IQrManager, QrManagerBlob>();
+builder.Services.AddScoped<IPhotoManager, PhotoManagerBlob>();
 builder.Services.AddSingleton(_ => new BlobServiceClient("UseDevelopmentStorage=true"));
 
 
@@ -63,9 +65,12 @@ using (var scope = app.Services.CreateScope())
     await using (var context = scope.ServiceProvider.GetService<AppDbContext>())
         context!.Database.EnsureCreated();
     var blobServiceClient = scope.ServiceProvider.GetRequiredService<BlobServiceClient>();
-    var blobContainerClient = blobServiceClient.GetBlobContainerClient("events");
-    await blobContainerClient.CreateIfNotExistsAsync();
-    await blobContainerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
+    var blobContainerClientEvents = blobServiceClient.GetBlobContainerClient("events");
+    await blobContainerClientEvents.CreateIfNotExistsAsync();
+    await blobContainerClientEvents.SetAccessPolicyAsync(PublicAccessType.Blob);
+    var blobContainerClientPhotos = blobServiceClient.GetBlobContainerClient("photos");
+    await blobContainerClientPhotos.CreateIfNotExistsAsync();
+    await blobContainerClientPhotos.SetAccessPolicyAsync(PublicAccessType.Blob);
 }
 
 app.UseGrpcWeb();
@@ -74,7 +79,7 @@ app.UseMiddleware<RoleClaimsMiddleware>();
 app.UseAuthorization();
 
 app.MapGrpcService<PhotosAService>().AllowAnonymous();
-app.MapGrpcService<GreeterService>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<GreeterServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<UserManagementService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<PhotoEventServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 
