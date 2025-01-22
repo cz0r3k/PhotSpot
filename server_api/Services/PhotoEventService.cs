@@ -3,6 +3,7 @@ using QRCoder;
 using server_api.Data;
 using server_api.Services.PhotosManager;
 using server_api.Services.QrManager;
+using server_api.Services.PhotosManager;
 using util.PhotoEvent;
 using PhotoEvent = server_api.Data.PhotoEvent;
 
@@ -46,10 +47,14 @@ internal class PhotoEventService(
         now = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 
         var user = await appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-        if (user is null) return null;
+        if (user is null)
+        {
+            Console.WriteLine("nie ma usera o takim mailu");
+            return null;
+        }
         var photoEvent = await appDbContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
         var photo = new Photo
-            { PhotoEvent = photoEvent!, User = user, Path = "", UploadDate = now, LikesCount = 0, IsDeleted = false };
+        { PhotoEvent = photoEvent!, User = user, Path = "", UploadDate = now, LikesCount = 0, IsDeleted = false };
         await appDbContext.Photos.AddAsync(photo);
         await appDbContext.SaveChangesAsync();
         await photoManager.Save(photo.Id, eventId, photoData);
@@ -63,7 +68,6 @@ internal class PhotoEventService(
             await appDbContext.Photos.Where(p => p.PhotoEvent.Id == eventId).Select(p => p.Id).ToListAsync();
         return photosId;
     }
-
 
     private async Task CreateQrCode(PhotoEventPayload photoEventPayload)
     {

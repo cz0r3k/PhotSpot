@@ -11,6 +11,8 @@ service PhotoEvent{
   rpc Create (CreateRequest) returns (CreateReply);
   rpc GetDetails (UUID) returns (DetailsReply);
   rpc GetActiveEvents (google.protobuf.Empty) returns (SimpleReply);
+  rpc GetPhotos(UUID) returns (PhotoReply);
+  rpc AddPhoto(stream PhotoChunk) returns (UploadStatus);
 }
 
 enum EventDuration {
@@ -71,4 +73,17 @@ message SimpleReply {
 message EventSimple {
   UUID id = 1;
   string name = 2;
+}
+
+message PhotoReply{
+    repeated UUID photo_ids = 1;
+}
+
+message PhotoChunk{
+	bytes data = 1;
+}
+
+message UploadStatus{
+	bool success = 1;
+	string message = 2;
 }

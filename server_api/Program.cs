@@ -80,7 +80,7 @@ app.UseAuthorization();
 
 app.MapGrpcService<PhotosAService>().AllowAnonymous();
 app.MapGrpcService<GreeterServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
-app.MapGrpcService<UserManagementService>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<UserManagementServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<PhotoEventServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 
 app.MapGet("/",

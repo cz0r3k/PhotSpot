@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QRtest.BrowsePhotosPage">
+
+    <ContentPage.Content>
+        <Grid>
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               IsRunning="False"
+                               IsVisible="False"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+            <CarouselView x:Name="ImageCarousel"
+                          ItemsSource="{Binding Images}"
+                          HorizontalScrollBarVisibility="Default"
+                          VerticalOptions="FillAndExpand">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame HasShadow="False"
+                           BorderColor="White"
+                           CornerRadius="10"
+                           Padding="0"
+                           Margin="10">
+                            <StackLayout Spacing="100" VerticalOptions="FillAndExpand">
+                                <Image Source="resources/images/logo_reverse.png"
+                                   Aspect="AspectFit"
+                                   HeightRequest="70"
+                                   HorizontalOptions="Center" />
+                                <Image Source="{Binding}" 
+                                   Aspect="AspectFill" 
+                                   HeightRequest="300" 
+                                   WidthRequest="300" 
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                                <Label Text="{Binding EventName}"
+                                        FontSize="14"
+                                        FontFamily="Righteous"
+                                        TextColor="#32a6a8"
+                                        HorizontalOptions="Center" />               
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

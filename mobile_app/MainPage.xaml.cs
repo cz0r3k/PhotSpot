@@ -6,6 +6,10 @@ using Grpc.Net.Client;
 using GrpcPhotos;
 using System.Text.Json;
 using util.PhotoEvent;
+using GrpcEvent;
+using System;
+using Google.Protobuf.WellKnownTypes;
+using Microsoft.Extensions.Logging;
 
 namespace QRtest
 {
@@ -122,9 +126,28 @@ namespace QRtest
 
                     if (jsonDocument != null)
                     {
-                        barcodeResult.Text = jsonDocument.Name;
+                        
+                        if (await IsEventActive(jsonDocument.EventId))
+                        {
+                            EventInfoManager.EventId = jsonDocument.EventId;
+                            EventInfoManager.EventName = jsonDocument.Name;
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Event is not active.");
+                        }
 
-                        //TODO walidacja czy expired ED
+                        // GetPhotoLinks
+                        if (!EventInfoManager.EventId.HasValue)
+                        {
+                            throw new InvalidOperationException("Event ID is empty.");
+                        }
+                        PhotoGuidManager.PhotoGuids = await GetPhotoLinks((Guid)EventInfoManager.EventId);
+                        //string photoGuidsString = string.Join(" ", photoGuids);
+                        //await DisplayAlert("Photo IDs:", photoGuidsString, "OK"); // tylko debug
+                        
+
+                        //TODO * walidacja czy expired ED
 
                         await Task.Delay(1000);
                         await Shell.Current.GoToAsync("TakePhotoPage");
@@ -162,7 +185,99 @@ namespace QRtest
 
             });
         }
+        private async Task<IEnumerable<Guid>> GetPhotoLinks(Guid event_id)
+        {
 
+            try
+            {
+                var socketHttpHandler = new SocketsHttpHandler
+                {
+                    SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+                    {
+                        RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+                    },
+                    EnableMultipleHttp2Connections = true
+                };
+
+                using (var channel = GrpcChannel.ForAddress($"https://{Globals.IP_ADDRESS}:7244", new GrpcChannelOptions
+                {
+                    HttpHandler = socketHttpHandler
+                }))
+                {
+                    var client = new PhotoEvent.PhotoEventClient(channel);
+
+                    var response = await client.GetPhotosAsync(new UUID { Value = event_id.ToString() });
+
+                    return response.PhotoIds.Select(photoId => Guid.Parse(photoId.Value));
+                }
+            }
+            catch (Grpc.Core.RpcException ex)
+            {
+                await DisplayAlert("Error", "Server is unavailable: " + ex.Message, "OK");
+                return Enumerable.Empty<Guid>();
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                await DisplayAlert("Error", "Network error: " + ex.Message, "OK");
+                return Enumerable.Empty<Guid>();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "An unexpected error occurred: " + ex.Message, "OK");
+                return Enumerable.Empty<Guid>();
+            }
+        }
+
+        private async Task<bool> IsEventActive(Guid event_id)
+        {
+
+            try
+            {
+                var socketHttpHandler = new SocketsHttpHandler
+                {
+                    SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+                    {
+                        RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+                    },
+                    EnableMultipleHttp2Connections = true
+                };
+
+                using (var channel = GrpcChannel.ForAddress($"https://{Globals.IP_ADDRESS}:7244", new GrpcChannelOptions
+                {
+                    HttpHandler = socketHttpHandler
+                }))
+                {
+                    var client = new PhotoEvent.PhotoEventClient(channel);
+
+                    var response = await client.GetActiveEventsAsync(new Empty());
+
+                    foreach (var photoEvent in response.Event)
+                    {
+                        if (Guid.TryParse(photoEvent.Id.Value, out var eventId) && eventId == event_id)
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+            }
+            catch (Grpc.Core.RpcException ex)
+            {
+                await DisplayAlert("Error", "Server is unavailable: " + ex.Message, "OK");
+                return false;
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                await DisplayAlert("Error", "Network error: " + ex.Message, "OK");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "An unexpected error occurred: " + ex.Message, "OK");
+                return false;
+            }
+        }
         private void cameraView_CamerasLoaded(object sender, EventArgs e)
         {
             cameraView.Camera = cameraView.Cameras[0];
