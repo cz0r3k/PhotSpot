@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QRCoder;
 using server_api.Data;
+using server_api.Services.PhotosManager;
 using server_api.Services.QrManager;
 using server_api.Services.PhotosManager;
 using util.PhotoEvent;
@@ -11,7 +12,8 @@ namespace server_api.Services;
 internal class PhotoEventService(
     ILogger<UserManagementService> logger,
     AppDbContext appDbContext,
-    IQrManager qrManager, IPhotoManager photoManager) : IPhotoEventService
+    IQrManager qrManager,
+    IPhotoManager photoManager) : IPhotoEventService
 {
     public async Task<Guid?> Create(string email, PhotoEventArgs photoEventArgs)
     {
@@ -45,7 +47,6 @@ internal class PhotoEventService(
         now = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
 
         var user = await appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-
         if (user is null)
         {
             Console.WriteLine("nie ma usera o takim mailu");
@@ -60,17 +61,11 @@ internal class PhotoEventService(
         logger.LogInformation($"Photo {photo.Id} added to event {eventId} by {user.Email}");
         return photo.Id;
     }
+
     public async Task<IEnumerable<Guid>> GetPhotos(Guid eventId)
     {
         var photosId =
             await appDbContext.Photos.Where(p => p.PhotoEvent.Id == eventId).Select(p => p.Id).ToListAsync();
-
-        //var photosId = new[]
-        //{
-        //    Guid.Parse("123e4567-e89b-12d3-a456-426614174000"),
-        //    Guid.Parse("223e4567-e89b-12d3-a456-426614174001"),
-        //    Guid.Parse("323e4567-e89b-12d3-a456-426614174002")
-        //};
         return photosId;
     }
 

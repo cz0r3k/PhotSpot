@@ -13,7 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{5397B6
 	ProjectSection(SolutionItems) = preProject
 		Protos\event.proto = Protos\event.proto
 		Protos\greet.proto = Protos\greet.proto
-		Protos\photos.proto = Protos\photos.proto
 		Protos\user.proto = Protos\user.proto
 	EndProjectSection
 EndProject
