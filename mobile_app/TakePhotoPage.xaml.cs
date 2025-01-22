@@ -257,7 +257,7 @@ namespace QRtest
             // todo tutaj najpierw zaciagniecie zdjec z folderu i ladne 
             //DisplayAlert("Browse photos", "Tutaj bedzie obserwacja zdjec", "OK");
             //await Navigation.PushAsync(new mobile_app.BrowsePage());
-            await Shell.Current.GoToAsync("BrowsePage");
+            await Shell.Current.GoToAsync("BrowsePhotosPage");
         }
     }
 
