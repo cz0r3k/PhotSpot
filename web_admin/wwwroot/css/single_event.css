@@ -1,0 +1,53 @@
+﻿.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+}
+
+table {
+    margin: 0 auto;
+    width: 40%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #32a6a8;
+}
+
+th {
+    background-color: white;
+    color: black;
+}
+
+td:nth-child(1) {
+    background-color: #32a6a8;
+    color: white;
+}
+
+td:nth-child(2) {
+    background-color: white;
+    color: black;
+}
+
+img {
+    margin-top: 30px;
+    max-width: 100%;
+    height: auto;
+}
+
+.centered-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.centered-img-container img {
+    max-width: 100%;
+    height: auto;
+}

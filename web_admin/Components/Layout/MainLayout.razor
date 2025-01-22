@@ -1,21 +1,17 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
+        <div class="top-row px-4" style="background-color: #32a6a8; color: white";>
             <AuthorizeView>
                 <Authorized>
-                    <a href="logout">Logout</a>
+                    <a href="logout" style="color: white;">Logout</a>
                 </Authorized>
                 <NotAuthorized>
-                    <a href="login">Login</a>
+                    <a href="login" style="color: white;">Login</a>
                 </NotAuthorized>
             </AuthorizeView>
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            @* <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a> *@
         </div>
 
         <article class="content px-4">

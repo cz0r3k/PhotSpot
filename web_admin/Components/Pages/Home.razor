@@ -2,6 +2,20 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+
+
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <img src="images/web_logo_rev2.png" class="centered-image" />
+            <button class="login-button" onclick="location.href='events'">Go to events</button>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container">
+            <img src="images/web_logo_rev2.png" class="centered-image" />
+            <button class="login-button" onclick="location.href='login'">LOG IN</button>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
