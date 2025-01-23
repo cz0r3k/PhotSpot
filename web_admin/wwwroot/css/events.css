@@ -1,0 +1,83 @@
+﻿.form-container {
+    display: flex;
+    margin-top: 200px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 25vh;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.btn-primary {
+    background-color: #32a6a8;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #236061;
+}
+
+.table {
+    margin: 0 auto;
+    width: 50%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table thead th {
+    background-color: #32a6a8;
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #32a6a8;
+}
+
+.table tbody tr {
+    background-color: white;
+    border: 1px solid #32a6a8;
+}
+
+.table tbody td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #32a6a8;
+}
+
+.table tbody tr td:first-child {
+    color: #32a6a8;
+}
+
+.table tbody tr td a {
+    color: #32a6a8;
+    text-decoration: none;
+}
+
+.table tbody tr td a:hover {
+    text-decoration: underline;
+}
+
+table a {
+    color: #298d8f;
+}

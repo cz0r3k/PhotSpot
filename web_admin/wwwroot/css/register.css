@@ -1,0 +1,30 @@
+﻿.center-text {
+    text-align: center;
+}
+
+.custom-button {
+    background-color: #32a6a8;
+    color: white;
+    border: 2px solid #32a6a8;
+}
+
+.custom-button:hover {
+    background-color: #236061;
+    color: white;
+    border: 2px solid #236061;
+}
+
+.custom-input {
+    width: 20%;
+    margin: 0 auto;
+}
+
+.center-div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}

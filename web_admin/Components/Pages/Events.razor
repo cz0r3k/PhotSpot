@@ -11,11 +11,18 @@
 @inject PhotoEvent.PhotoEventClient EventClient
 @inject NavigationManager NavigationManager
 
+<head>
+     <link href="css/events.css" rel="stylesheet" />
+</head>
+
 <PageTitle>Events</PageTitle>
 
-
-<input type="text" @bind="_eventName" placeholder="type name" class="form-control"/>
-<button class="btn btn-primary" @onclick="CreateEvent">Create event</button>
+<div class="form-container">
+    <div class="form-group">
+        <input type="text" @bind="_eventName" placeholder="Type event name" class="form-control" />
+    </div>
+    <button class="btn btn-primary" @onclick="CreateEvent">Create Event</button>
+</div>
 
 <table class="table">
     <thead>
@@ -25,15 +32,15 @@
     </tr>
     </thead>
     <tbody>
-    
+
     @foreach (var photoEvent in _photoEvents)
-    {
-        <tr>
-        <th>@photoEvent.Name</th>
-        <th><a href="/event/@(photoEvent.Id)">@photoEvent.Id</a></th>
-        </tr>
-    }
-    
+        {
+            <tr>
+                <th>@photoEvent.Name</th>
+                <th><a href="/event/@(photoEvent.Id)">@photoEvent.Id</a></th>
+            </tr>
+        }
+
     </tbody>
 </table>
 
@@ -50,6 +57,7 @@
 
     private async Task CreateEvent()
     {
+        Console.WriteLine(_eventName); 
         if (!string.IsNullOrEmpty(_eventName))
         {
             var reply = await EventClient.CreateAsync(new CreateRequest { Name = _eventName, Duration = EventDuration.DurationDay, MinimalTimespan = EventMinimalTimespan.Timespan1H });

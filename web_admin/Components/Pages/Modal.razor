@@ -1,0 +1,26 @@
+﻿<head>
+     <link href="css/register.css" rel="stylesheet" />
+</head>
+
+<div class="modal" tabindex="-1" style="display:@(Show ? "block" : "none")">
+    <div class="modal-dialog">
+        <div class="modal-content center-text">
+            <h5 class="modal-title">@Title</h5>
+            @* <button type="button" class="btn-close" aria-label="Close" @onclick="Close"></button> *@
+            <p>@Message</p>
+            <button type="button" class="btn btn-primary custom-button" @onclick="OnConfirm">Go to events</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Message { get; set; }
+    [Parameter] public bool Show { get; set; }
+    [Parameter] public EventCallback OnConfirm { get; set; }
+
+    private void Close()
+    {
+        Show = false;
+    }
+}

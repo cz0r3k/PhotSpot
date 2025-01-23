@@ -1,49 +1,42 @@
-﻿@page "/grpc"
+﻿@page "/register"
 @rendermode InteractiveServer
 @using Google.Protobuf.WellKnownTypes
 @using GrpcGreeter
 @using GrpcUser
 @inject Greeter.GreeterClient GreeterClient
 @inject UserManagement.UserManagementClient UserManagementClient
-<PageTitle>grpc test</PageTitle>
+@inject NavigationManager Nav
 
-<h1>grpc</h1>
+<head>
+     <link href="css/register.css" rel="stylesheet" />
+</head>
+<div class="center-div">
+    <h1>It's your first time at PhotSpot!</h1>
+    <h3>Please provide your nickname...</h3>
 
+    <input type="text" @bind="_message" placeholder="Type your nickname..." class="form-control custom-input" />
 
-<p role="status">Response: @_response</p>
+    <button class="btn custom-button" @onclick="RegisterUser">Register</button>
+    <button class="btn custom-button" @onclick="RegisterUserAdmin">Register as Admin</button>
+</div>
 
-<input type="text" @bind="_message" placeholder="type name" class="form-control" />
-
-<button class="btn btn-primary" @onclick="SendGrpcRequest">Click me</button>
-<button class="btn btn-primary" @onclick="RegisterUser">Register</button>
-<button class="btn btn-primary" @onclick="RegisterUserAdmin">Register as Admin</button>
-
-<AuthorizeView>
-    <Authorized>
-        @foreach (var claim in context.User.Claims)
-        {
-            <p>@claim.Type: @claim.Value</p>
-        }
-        <p>Is user registered: @_isRegistered</p>
-        <p>Is user admin: @_isAdmin</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Please login!</p>
-    </NotAuthorized>
-</AuthorizeView>
-
+<Modal Title="Registration Successful" Message="You have been successfully registered." Show="@_showModal" OnConfirm="HandleConfirm" />
 
 @code {
     private string _message = "";
     private string _response = "";
     private bool _isAdmin;
     private bool _isRegistered;
+    private bool _showModal;
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     // _isAdmin = await IsAdmin();
-    //     // _isRegistered = await IsRegistered();
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        _isRegistered = await IsRegistered();
+        if (_isRegistered)
+        {
+            Nav.NavigateTo("/events");
+        }
+    }
 
     private async Task SendGrpcRequest()
     {
@@ -63,6 +56,10 @@
                 Console.WriteLine("User registered");
             }
             _isRegistered = await IsRegistered();
+            if (_isRegistered)
+            {
+                _showModal = true;
+            }
         }
     }
     private async Task RegisterUserAdmin()
@@ -76,6 +73,10 @@
             }
             _isRegistered = await IsRegistered();
             _isAdmin = await IsAdmin();
+            if (_isRegistered)
+            {
+                _showModal = true;
+            }
         }
     }
 
@@ -87,5 +88,11 @@
     private async Task<bool> IsRegistered()
     {
         return (await UserManagementClient.IsRegisteredAsync(new Empty())).Message;
+    }
+
+    private void HandleConfirm()
+    {
+        _showModal = false;
+        Nav.NavigateTo("/events");
     }
 }
