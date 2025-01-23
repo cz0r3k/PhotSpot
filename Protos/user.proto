@@ -10,10 +10,18 @@ service UserManagement{
   rpc RegisterAdmin (RegisterRequest) returns (RegisterReply);
   rpc IsRegistered (google.protobuf.Empty) returns (IsRegisterReply);
   rpc IsAdmin (google.protobuf.Empty) returns (IsAdminReply);
+  
+  rpc RegisterInsecure(RegisterInsecureRequest) returns (RegisterReply);
+  rpc IsRegisteredInsecure(IsRegisteredInsecureRequest) returns (IsRegisterReply);
 }
 
-message RegisterRequest{
+message RegisterRequest {
   string name = 1;
+}
+
+message RegisterInsecureRequest {
+  string name = 1;
+  string email = 2;
 }
 
 message RegisterReply {
@@ -26,4 +34,8 @@ message IsRegisterReply {
 
 message IsAdminReply {
   bool message = 1;
+}
+
+message IsRegisteredInsecureRequest {
+  string email = 1;
 }
