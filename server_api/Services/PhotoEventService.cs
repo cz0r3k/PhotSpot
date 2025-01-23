@@ -3,7 +3,6 @@ using QRCoder;
 using server_api.Data;
 using server_api.Services.PhotosManager;
 using server_api.Services.QrManager;
-using server_api.Services.PhotosManager;
 using util.PhotoEvent;
 using PhotoEvent = server_api.Data.PhotoEvent;
 
