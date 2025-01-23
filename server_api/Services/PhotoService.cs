@@ -22,6 +22,21 @@ public class PhotoService(
         return true;
     }
 
+    public async Task<bool> UnLikePhoto(string email, Guid eventId, Guid photoId)
+    {
+        var user = await appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null) return false;
+        var photo = await appDbContext.Photos.Include(p => p.PhotoEvent).Include(p => p.Likes)
+            .ThenInclude(photoLike => photoLike.User).FirstOrDefaultAsync(p => p.Id == photoId && p.PhotoEvent.Id == eventId);
+        if (photo == null) return false;
+        var like = photo.Likes.FirstOrDefault(l => l.User.Id == user.Id);
+        if (like == null) return false;
+        photo.LikesCount -= 1;
+        appDbContext.PhotoLikes.Remove(like);
+        await appDbContext.SaveChangesAsync();
+        return true;
+    }
+
     public async Task<PhotoDetails?> GetPhotoDetails(string email, Guid eventId, Guid photoId)
     {
         var user = await appDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);

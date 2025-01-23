@@ -8,6 +8,7 @@ package photo;
 
 service Photo {
   rpc LikePhotoInsecure (LikePhotoInsecureRequest) returns (LikePhotoReply);
+  rpc UnLikePhotoInsecure (LikePhotoInsecureRequest) returns (LikePhotoReply);
   rpc GetPhotoDetailsInsecure (PhotoDetailsInsecureRequest) returns (PhotoDetailsReply);
 }
 
