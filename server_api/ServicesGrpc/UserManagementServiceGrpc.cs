@@ -40,4 +40,20 @@ internal class UserManagementServiceGrpc(
         var email = httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Email)!;
         return new IsAdminReply{Message = await userManagementService.IsAdmin(email)};
     }
+
+    [AllowAnonymous]
+    public override async Task<RegisterReply> RegisterInsecure(RegisterInsecureRequest request, ServerCallContext context)
+    {
+        var email = request.Email;
+        var username = request.Name;
+        var user = await userManagementService.RegisterNewAdmin(email, username);
+        return new RegisterReply { Message = user is not null };
+    }
+
+    [AllowAnonymous]
+    public override async Task<IsRegisterReply> IsRegisteredInsecure(IsRegisteredInsecureRequest request, ServerCallContext context)
+    {
+        var email = request.Email;
+        return new IsRegisterReply{Message = await userManagementService.IsRegistered(email)};
+    }
 }
