@@ -8,6 +8,11 @@ package photo;
 
 service Photo {
   rpc LikePhotoInsecure (LikePhotoInsecureRequest) returns (LikePhotoReply);
+  rpc GetPhotoDetailsInsecure (PhotoDetailsInsecureRequest) returns (PhotoDetailsReply);
+}
+
+message UUID {
+  string value = 1;
 }
 
 message LikePhotoInsecureRequest{
@@ -20,6 +25,13 @@ message LikePhotoReply {
   bool success = 1;
 }
 
-message UUID {
-  string value = 1;
+message PhotoDetailsInsecureRequest{
+  string email = 1;
+  event.UUID event_id = 2;
+  UUID photo_id = 3;
+}
+
+message PhotoDetailsReply{
+  optional int64 likes = 1;
+  optional bool is_user_like = 2;
 }

@@ -17,4 +17,14 @@ internal class PhotoServiceGrpc(IHttpContextAccessor httpContextAccessor, IPhoto
         var result = await photoService.LikePhoto(email, Guid.Parse(eventId.Value), Guid.Parse(photoId.Value));
         return new LikePhotoReply { Success = result };
     }
+
+    [AllowAnonymous]
+    public override async Task<PhotoDetailsReply> GetPhotoDetailsInsecure(PhotoDetailsInsecureRequest request, ServerCallContext context)
+    {
+        var email = request.Email;
+        var photoId = request.PhotoId;
+        var eventId = request.EventId;
+        var result = await photoService.GetPhotoDetails(email, Guid.Parse(eventId.Value), Guid.Parse(photoId.Value));
+        return result is null ? new PhotoDetailsReply { } : result.ToPhotoDetailsReply();
+    }
 }
