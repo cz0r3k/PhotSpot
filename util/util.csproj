@@ -15,9 +15,8 @@
 
     <ItemGroup>
         <Protobuf Include="../Protos/event.proto" />
-        <Protobuf Include="../Protos/greet.proto" />
 		<Protobuf Include="../Protos/user.proto" />
-		<Protobuf Include="../Protos/photos.proto" />
+        <Protobuf Include="../Protos/photo.proto" />
     </ItemGroup>
 
 </Project>

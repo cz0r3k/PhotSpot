@@ -12,8 +12,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protos", "Protos", "{5397B68B-B0E5-4FA9-A291-5F3A7227F150}"
 	ProjectSection(SolutionItems) = preProject
 		Protos\event.proto = Protos\event.proto
-		Protos\greet.proto = Protos\greet.proto
 		Protos\user.proto = Protos\user.proto
+		Protos\photo.proto = Protos\photo.proto
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "util", "util\util.csproj", "{527887EB-32B3-498A-B9F7-CC90226E92CB}"

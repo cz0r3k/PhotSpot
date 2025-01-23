@@ -50,6 +50,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", corsPolicyBuilder =>
 
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IPhotoEventService, PhotoEventService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 //builder.Services.AddScoped<IQrManager, QrManagerFile>();
 builder.Services.AddScoped<IQrManager, QrManagerBlob>();
 builder.Services.AddScoped<IPhotoManager, PhotoManagerBlob>();
@@ -78,8 +79,6 @@ app.UseCors();
 app.UseMiddleware<RoleClaimsMiddleware>();
 app.UseAuthorization();
 
-app.MapGrpcService<PhotosAService>().AllowAnonymous();
-app.MapGrpcService<GreeterServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<UserManagementServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<PhotoEventServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 

@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+import "event.proto";
+
+
+option csharp_namespace = "GrpcPhoto";
+
+package photo;
+
+service Photo {
+  rpc LikePhotoInsecure (LikePhotoInsecureRequest) returns (LikePhotoReply);
+}
+
+message LikePhotoInsecureRequest{
+  string email = 1;
+  event.UUID event_id = 2;
+  UUID photo_id = 3;
+}
+
+message LikePhotoReply {
+  bool success = 1;
+}
+
+message UUID {
+  string value = 1;
+}
