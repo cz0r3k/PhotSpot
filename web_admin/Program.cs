@@ -77,7 +77,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.MapGet("/login",
-        async context => await context.ChallengeAsync(new AuthenticationProperties { RedirectUri = "/events" }))
+        async context => await context.ChallengeAsync(new AuthenticationProperties { RedirectUri = "/register" }))
     .AllowAnonymous();
 
 app.MapGet("/logout", async context =>
