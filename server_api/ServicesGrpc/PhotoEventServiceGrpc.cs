@@ -18,16 +18,30 @@ internal class PhotoEventServiceGrpc(
     public override async Task<CreateReply> Create(CreateRequest request, ServerCallContext context)
     {
         var email = httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Email)!;
-        var photoEventArgs = new PhotoEventArgs { Name = request.Name };
+        decimal latitude = 0;
+        decimal longitude = 0;
+        var parseResult = false;
+        if (request.Location != null)
+        {
+            parseResult = decimal.TryParse(request.Location.Latitude, out latitude) && decimal.TryParse(request.Location.Longitude, out longitude);
+        }
+        var photoEventArgs = parseResult? new PhotoEventArgs
+        {
+            Name = request.Name, Latitude = latitude, Longitude = longitude,
+        }: new PhotoEventArgs
+        {
+            Name = request.Name,
+        };
         var eventId = await photoEventService.Create(email, photoEventArgs);
-        return new CreateReply{ Id = new UUID{Value = eventId?.ToString()}};
+        return new CreateReply { Id = new UUID { Value = eventId?.ToString() } };
     }
 
     public override async Task<DetailsReply> GetDetails(UUID request, ServerCallContext context)
     {
         var photoEvent = await photoEventService.GetDetails(Guid.Parse(request.Value));
-        return photoEvent == null ? new DetailsReply {  } : photoEvent.ToPhotoEventDetails().ToDetailsReply();
+        return photoEvent == null ? new DetailsReply { } : photoEvent.ToPhotoEventDetails().ToDetailsReply();
     }
+
     [AllowAnonymous]
     public override async Task<SimpleReply> GetActiveEvents(Empty request, ServerCallContext context)
     {
@@ -37,6 +51,7 @@ internal class PhotoEventServiceGrpc(
         {
             reply.Event.Add(photoEvent.ToEventSimple());
         }
+
         return reply;
     }
 
@@ -50,15 +65,16 @@ internal class PhotoEventServiceGrpc(
         {
             reply.PhotoIds.Add(new UUID { Value = photoId.ToString() });
         }
+
         return reply;
     }
 
     [AllowAnonymous]
-    public override async Task<UploadStatus> AddPhoto(IAsyncStreamReader<PhotoChunk> requestStream, ServerCallContext context)
+    public override async Task<UploadStatus> AddPhoto(IAsyncStreamReader<PhotoChunk> requestStream,
+        ServerCallContext context)
     {
         try
         {
-
             var headers = context.RequestHeaders;
             string eventIdHeader = headers.GetValue("eventId");
             string emailHeader = headers.GetValue("email");
@@ -82,6 +98,7 @@ internal class PhotoEventServiceGrpc(
                     var chunk = requestStream.Current;
                     await photoStream.WriteAsync(chunk.Data.ToByteArray());
                 }
+
                 photo = photoStream.ToArray();
             }
 
@@ -102,5 +119,4 @@ internal class PhotoEventServiceGrpc(
             Message = "Photo uploaded successfully"
         };
     }
-
 }

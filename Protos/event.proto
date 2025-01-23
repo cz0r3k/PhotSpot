@@ -42,6 +42,12 @@ message CreateRequest{
   string name = 1;
   EventDuration duration = 2;
   EventMinimalTimespan minimal_timespan = 3;
+  optional Coordinates location = 4;
+}
+
+message Coordinates{
+  string Latitude = 1;
+  string Longitude = 2;
 }
 
 message CreateReply {

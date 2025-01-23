@@ -13,6 +13,8 @@ public class PhotoEvent
     public required DateTime ExpirationDate { get; set; }
     public required TimeSpan MinimalTimespan { get; set; }
     public required TimeSpan PhotoExpiration { get; set; }
+    public decimal? Latitude  { get; set; }
+    public decimal? Longitude   { get; set; }
     public ICollection<Photo> Photos { get; } = new List<Photo>();
     public ICollection<LastUploadedPhoto> LastUploadedPhotos { get; } = new List<LastUploadedPhoto>();
 
@@ -48,6 +50,8 @@ public class PhotoEvent
 public class PhotoEventArgs
 {
     public required string Name { get; init; }
+    public decimal? Latitude { get; init; }
+    public decimal? Longitude { get; init; }
 
     public PhotoEvent ToPhotoEvent(User user)
     {
@@ -57,7 +61,8 @@ public class PhotoEventArgs
         {
             Name = Name, Owner = user, CreationDate = now,
             ExpirationDate = now.AddDays(1),
-            MinimalTimespan = TimeSpan.FromHours(2), PhotoExpiration = TimeSpan.FromHours(4)
+            MinimalTimespan = TimeSpan.FromHours(2), PhotoExpiration = TimeSpan.FromHours(4),
+            Latitude = Latitude, Longitude = Longitude
         };
     }
 }
