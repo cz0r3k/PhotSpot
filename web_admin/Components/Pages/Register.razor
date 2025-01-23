@@ -1,9 +1,7 @@
 ﻿@page "/register"
 @rendermode InteractiveServer
 @using Google.Protobuf.WellKnownTypes
-@using GrpcGreeter
 @using GrpcUser
-@inject Greeter.GreeterClient GreeterClient
 @inject UserManagement.UserManagementClient UserManagementClient
 @inject NavigationManager Nav
 
@@ -35,14 +33,6 @@
         if (_isRegistered)
         {
             Nav.NavigateTo("/events");
-        }
-    }
-
-    private async Task SendGrpcRequest()
-    {
-        if (!string.IsNullOrEmpty(_message))
-        {
-            _response = (await GreeterClient.SayHelloAsync(new HelloRequest { Name = _message })).Message;
         }
     }
 

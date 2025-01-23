@@ -81,6 +81,7 @@ app.UseAuthorization();
 
 app.MapGrpcService<UserManagementServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGrpcService<PhotoEventServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
+app.MapGrpcService<PhotoServiceGrpc>().EnableGrpcWeb().RequireCors("AllowAll");
 
 app.MapGet("/",
     () =>
