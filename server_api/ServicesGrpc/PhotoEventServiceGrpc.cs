@@ -1,12 +1,10 @@
 ﻿using System.Security.Claims;
-using Azure.Storage.Blobs;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using GrpcEvent;
 using Microsoft.AspNetCore.Authorization;
 using server_api.Data;
 using server_api.Services;
-using server_api.Services.PhotosManager;
 
 namespace server_api.ServicesGRPC;
 
@@ -23,15 +21,19 @@ internal class PhotoEventServiceGrpc(
         var parseResult = false;
         if (request.Location != null)
         {
-            parseResult = decimal.TryParse(request.Location.Latitude, out latitude) && decimal.TryParse(request.Location.Longitude, out longitude);
+            parseResult = decimal.TryParse(request.Location.Latitude, out latitude) &&
+                          decimal.TryParse(request.Location.Longitude, out longitude);
         }
-        var photoEventArgs = parseResult? new PhotoEventArgs
-        {
-            Name = request.Name, Latitude = latitude, Longitude = longitude,
-        }: new PhotoEventArgs
-        {
-            Name = request.Name,
-        };
+
+        var photoEventArgs = parseResult
+            ? new PhotoEventArgs
+            {
+                Name = request.Name, Latitude = latitude, Longitude = longitude,
+            }
+            : new PhotoEventArgs
+            {
+                Name = request.Name,
+            };
         var eventId = await photoEventService.Create(email, photoEventArgs);
         return new CreateReply { Id = new UUID { Value = eventId?.ToString() } };
     }
@@ -51,7 +53,18 @@ internal class PhotoEventServiceGrpc(
         {
             reply.Event.Add(photoEvent.ToEventSimple());
         }
+        return reply;
+    }
 
+    [AllowAnonymous]
+    public override async Task<LocationReply> GetEventLocalizations(Empty request, ServerCallContext context)
+    {
+        var photoEvents = await photoEventService.GetEventLocalizations();
+        var reply = new LocationReply();
+        foreach (var photoEvent in photoEvents)
+        {
+            reply.Event.Add(photoEvent.ToEventLocation());
+        }
         return reply;
     }
 

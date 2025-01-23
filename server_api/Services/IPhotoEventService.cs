@@ -9,6 +9,8 @@ internal interface IPhotoEventService
     public Task<Guid?> Create(string email, PhotoEventArgs photoEventArgs);
     public Task<PhotoEvent?> GetDetails(Guid id);
     public Task<IEnumerable<PhotoEventSimple>> GetActiveEvents();
+    public Task<IEnumerable<PhotoEventLocation>> GetEventLocalizations();
     public Task<Guid?> AddPhoto(Guid eventId, string email, byte[] photoData);
     public Task<IEnumerable<Guid>> GetPhotos(Guid eventId);
+    
 }
