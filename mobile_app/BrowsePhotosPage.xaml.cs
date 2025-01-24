@@ -57,7 +57,7 @@ namespace QRtest
             var client = new Photo.PhotoClient(channel);
             var result = await client.LikePhotoInsecureAsync(new LikePhotoInsecureRequest
             {
-                Email = "brygidapapier@gmail.com", PhotoId = new UUID { Value = imageInfo.Id.ToString() },
+                Email = Preferences.Get("Email", ""), PhotoId = new UUID { Value = imageInfo.Id.ToString() },
                 EventId = new GrpcEvent.UUID { Value = EventInfoManager.EventId.ToString() }
             });
         }
@@ -84,7 +84,7 @@ namespace QRtest
             var client = new Photo.PhotoClient(channel);
             var result = await client.UnLikePhotoInsecureAsync(new LikePhotoInsecureRequest
             {
-                Email = "brygidapapier@gmail.com", PhotoId = new UUID { Value = imageInfo.Id.ToString() },
+                Email = Preferences.Get("Email", ""), PhotoId = new UUID { Value = imageInfo.Id.ToString() },
                 EventId = new GrpcEvent.UUID { Value = EventInfoManager.EventId.ToString() }
             });
         }
@@ -125,7 +125,7 @@ namespace QRtest
                 var reply = await client.GetPhotoDetailsInsecureAsync(new PhotoDetailsInsecureRequest
                 {
                     EventId = new GrpcEvent.UUID { Value = EventInfoManager.EventId.ToString() },
-                    PhotoId = new GrpcPhoto.UUID { Value = photoId.ToString() }, Email = "brygidapapier@gmail.com"
+                    PhotoId = new GrpcPhoto.UUID { Value = photoId.ToString() }, Email = Preferences.Get("Email", "")
                 });
                 return new PhotoDetails
                 {

@@ -2,11 +2,34 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="QRtest.AccountPage"
+             BackgroundImageSource="takephotoback.png"
              Title="My Account">
-    <VerticalStackLayout>
+    
+    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <!--<HorizontalStackLayout Spacing="10" VerticalOptions="Center"> -->
+
+
+
+        <Image Source="user_back.png" WidthRequest="200" HeightRequest="200" Margin="0,0,0,100"/>
+
         <Label 
-            Text="Tu będą dane o twoim koncie..."
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            Text="Username: "
+            FontSize="20"
+            TextColor="#298d8f" />
+        <Label 
+            Text="{Binding Username}"
+            FontSize="28"
+            TextColor="#298d8f" />
+
+        <Label 
+            Text="Email: "
+            FontSize="20"
+            TextColor="#298d8f" />
+        <Label 
+            Text="{Binding Email}"
+            FontSize="28"
+            TextColor="#298d8f" />
+        
+        <!-- </HorizontalStackLayout> -->
     </VerticalStackLayout>
 </ContentPage>
