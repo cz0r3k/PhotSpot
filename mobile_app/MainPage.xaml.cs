@@ -62,10 +62,13 @@ namespace QRtest
             Preferences.Set("Nickname", nick);
             Preferences.Set("Email", email);
 
-            await RegisterNewUser(nick, email);
+            RegisterNewUser(nick, email);
+
+            await DisplayAlert("Info", "New user added!.", "OK");
 
             //RegisterInsecureRequest rpc TODO
             ModalForm.IsVisible = false;
+            cameraViewContainer.IsVisible = true;
         }
 
         private void InitializeCameraView()
@@ -234,7 +237,7 @@ namespace QRtest
         //  string name = 1;
         //        string email = 2;
         //}
-        private async Task<bool> RegisterNewUser(string name, string email)
+        private bool RegisterNewUser(string name, string email)
         {
             try
             {
@@ -261,17 +264,17 @@ namespace QRtest
             }
             catch (Grpc.Core.RpcException ex)
             {
-                await DisplayAlert("Error", "Server is unavailable: " + ex.Message, "OK");
+                DisplayAlert("Error", "Server is unavailable: " + ex.Message, "OK");
                 return false;
             }
             catch (System.Net.Http.HttpRequestException ex)
             {
-                await DisplayAlert("Error", "Network error: " + ex.Message, "OK");
+                DisplayAlert("Error", "Network error: " + ex.Message, "OK");
                 return false;
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", "An unexpected error occurred: " + ex.Message, "OK");
+                DisplayAlert("Error", "An unexpected error occurred: " + ex.Message, "OK");
                 return false;
             }
         }
