@@ -29,12 +29,10 @@ namespace QRtest
             if (!imageInfo.IsLiked)
             {
                 await Like();
-                await DisplayAlert("Liked", $"liked {imageInfo.Id}", "OK");
             }
             else
             {
                 await Unlike();
-                await DisplayAlert("Liked", $"unliked {imageInfo.Id}", "OK");
             }
         }
 
@@ -59,8 +57,8 @@ namespace QRtest
             var client = new Photo.PhotoClient(channel);
             var result = await client.LikePhotoInsecureAsync(new LikePhotoInsecureRequest
             {
-                Email = "czorek@protonmail.com", PhotoId = new UUID { Value = imageInfo.Id.ToString() },
-                EventId = new GrpcEvent.UUID { Value = imageInfo.Id.ToString() }
+                Email = "brygidapapier@gmail.com", PhotoId = new UUID { Value = imageInfo.Id.ToString() },
+                EventId = new GrpcEvent.UUID { Value = EventInfoManager.EventId.ToString() }
             });
         }
 
@@ -86,8 +84,8 @@ namespace QRtest
             var client = new Photo.PhotoClient(channel);
             var result = await client.UnLikePhotoInsecureAsync(new LikePhotoInsecureRequest
             {
-                Email = "czorek@protonmail.com", PhotoId = new UUID { Value = imageInfo.Id.ToString() },
-                EventId = new GrpcEvent.UUID { Value = imageInfo.Id.ToString() }
+                Email = "brygidapapier@gmail.com", PhotoId = new UUID { Value = imageInfo.Id.ToString() },
+                EventId = new GrpcEvent.UUID { Value = EventInfoManager.EventId.ToString() }
             });
         }
 
@@ -127,7 +125,7 @@ namespace QRtest
                 var reply = await client.GetPhotoDetailsInsecureAsync(new PhotoDetailsInsecureRequest
                 {
                     EventId = new GrpcEvent.UUID { Value = EventInfoManager.EventId.ToString() },
-                    PhotoId = new GrpcPhoto.UUID { Value = photoId.ToString() }, Email = "czorek@protonmail.com"
+                    PhotoId = new GrpcPhoto.UUID { Value = photoId.ToString() }, Email = "brygidapapier@gmail.com"
                 });
                 return new PhotoDetails
                 {
