@@ -5,6 +5,7 @@ using Grpc.Core;
 using Grpc.Net.Client;
 //using GrpcPhotos;
 using GrpcEvent;
+using Microsoft.Maui.Storage;
 
 namespace QRtest
 {
@@ -95,7 +96,7 @@ namespace QRtest
                         var metadata = new Metadata
                         {
                             { "eventId", EventInfoManager.EventId.ToString() },
-                            { "email", "brygidapapier@gmail.com" }
+                            { "email",  Preferences.Get("Email", "") }
                         };
 
                         using (var call = client.AddPhoto(metadata))

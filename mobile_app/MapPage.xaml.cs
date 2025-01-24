@@ -4,7 +4,6 @@ using GrpcEvent;
 using Microsoft.Maui.Controls.Maps;
 using util.PhotoEvent;
 namespace QRtest;
-
 public partial class MapPage : ContentPage
 {
     private List<PhotoEventLocation> _eventLocations = new List<PhotoEventLocation>();
@@ -15,6 +14,8 @@ public partial class MapPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        await Task.Delay(1000);
 
         var resp = await GetLocations();
         if (resp != null) // czy jesli null to pass?
