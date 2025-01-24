@@ -10,6 +10,9 @@ using GrpcEvent;
 using System;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
+using GrpcUser;
+using System.Net.Mail;
 
 namespace QRtest
 {
@@ -37,6 +40,36 @@ namespace QRtest
             //cameraView.ControlBarcodeResultDuplicate = true;
             //cameraView.BarCodeDetectionEnabled = true;
         }
+        private async void OnSubmitClicked(object sender, EventArgs e)
+        {
+            string nick = NickEntry.Text;
+            string email = EmailEntry.Text;
+
+            if (string.IsNullOrEmpty(nick) || string.IsNullOrEmpty(email))
+            {
+                await DisplayAlert("Error", "Please fill in both fields!", "OK");
+                return;
+            }
+            try
+            {
+                var mailAddress = new MailAddress(email);
+            }
+            catch (FormatException)
+            {
+                await DisplayAlert("Error", "Please provide correct email address.", "OK");
+                return;
+            }
+            Preferences.Set("Nickname", nick);
+            Preferences.Set("Email", email);
+
+            RegisterNewUser(nick, email);
+
+            await DisplayAlert("Info", "New user added!.", "OK");
+
+            //RegisterInsecureRequest rpc TODO
+            ModalForm.IsVisible = false;
+            cameraViewContainer.IsVisible = true;
+        }
 
         private void InitializeCameraView()
         {
@@ -59,10 +92,22 @@ namespace QRtest
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            //Preferences.Default.Clear(); // todo wywalic!
+
+            // ew zamiast tego IsRegistered wywolanie
+
+            if (Preferences.Get("Nickname", "") == "" || Preferences.Get("Email", "") == "")
+            {
+                ModalForm.IsVisible = true;
+            }
+            else
+            {
+                cameraViewContainer.IsVisible = true;
+            }
+
 
             Shell.Current.CurrentItem.SetValue(Shell.TabBarIsVisibleProperty, true);
 
-            barcodeResult.Text = string.Empty;
 
             if (cameraView != null)
             {
@@ -184,6 +229,54 @@ namespace QRtest
                 }
 
             });
+        }
+
+
+        //        message RegisterInsecureRequest
+        //        {
+        //  string name = 1;
+        //        string email = 2;
+        //}
+        private bool RegisterNewUser(string name, string email)
+        {
+            try
+            {
+                var socketHttpHandler = new SocketsHttpHandler
+                {
+                    SslOptions = new System.Net.Security.SslClientAuthenticationOptions
+                    {
+                        RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+                    },
+                    EnableMultipleHttp2Connections = true
+                };
+
+                using (var channel = GrpcChannel.ForAddress($"https://{Globals.IP_ADDRESS}:7244", new GrpcChannelOptions
+                {
+                    HttpHandler = socketHttpHandler
+                }))
+                {
+                    var client = new UserManagement.UserManagementClient(channel);
+
+                    var resp = client.RegisterInsecure(new RegisterInsecureRequest{ Name = name, Email = email });
+                    // tutaj mozna badac response?
+                    return true;
+                }
+            }
+            catch (Grpc.Core.RpcException ex)
+            {
+                DisplayAlert("Error", "Server is unavailable: " + ex.Message, "OK");
+                return false;
+            }
+            catch (System.Net.Http.HttpRequestException ex)
+            {
+                DisplayAlert("Error", "Network error: " + ex.Message, "OK");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                DisplayAlert("Error", "An unexpected error occurred: " + ex.Message, "OK");
+                return false;
+            }
         }
         private async Task<IEnumerable<Guid>> GetPhotoLinks(Guid event_id)
         {

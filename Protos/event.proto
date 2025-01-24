@@ -11,6 +11,7 @@ service PhotoEvent{
   rpc Create (CreateRequest) returns (CreateReply);
   rpc GetDetails (UUID) returns (DetailsReply);
   rpc GetActiveEvents (google.protobuf.Empty) returns (SimpleReply);
+  rpc GetEventLocalizations (google.protobuf.Empty) returns (LocationReply);
   rpc GetPhotos(UUID) returns (PhotoReply);
   rpc AddPhoto(stream PhotoChunk) returns (UploadStatus);
 }
@@ -42,6 +43,12 @@ message CreateRequest{
   string name = 1;
   EventDuration duration = 2;
   EventMinimalTimespan minimal_timespan = 3;
+  optional Coordinates location = 4;
+}
+
+message Coordinates{
+  string Latitude = 1;
+  string Longitude = 2;
 }
 
 message CreateReply {
@@ -73,6 +80,15 @@ message SimpleReply {
 message EventSimple {
   UUID id = 1;
   string name = 2;
+}
+
+message LocationReply {
+  repeated EventLocation event = 1;
+}
+
+message  EventLocation {
+  string name = 1;
+  optional Coordinates location = 2;
 }
 
 message PhotoReply{

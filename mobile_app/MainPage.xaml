@@ -5,7 +5,6 @@
              x:Class="QRtest.MainPage"
              BackgroundImageSource="scanqr.png">
 
-    <!-- <ScrollView> -->
 
     <VerticalStackLayout
         Padding="30,0"
@@ -17,7 +16,8 @@
           HorizontalOptions="Center"
           VerticalOptions="Center"
           WidthRequest="300"
-          HeightRequest="300">
+          HeightRequest="300"
+          IsVisible="False">
 
             <cv:CameraView x:Name="cameraView"
                    HorizontalOptions="Center"
@@ -25,20 +25,22 @@
                    CamerasLoaded="cameraView_CamerasLoaded"
                    BarCodeDetectionEnabled="True"
                    BarcodeDetected="cameraView_BarcodeDetected" />
-
-            <!--<Border Stroke="White"
-                 StrokeThickness="10"
-                 HorizontalOptions="FillAndExpand"
-                 VerticalOptions="FillAndExpand" />-->
-
         </Grid>
 
-        <ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" />
-        
-        <Label x:Name="barcodeResult" FontSize="20" />
+        <ActivityIndicator x:Name="loadingIndicator"
+                   IsRunning="False"
+                   IsVisible="False"
+                   Color="#298d8f" />
 
+        <Frame BackgroundColor="Black" Padding="20" BorderColor="Gray" IsVisible="False" 
+           x:Name="ModalForm" HorizontalOptions="Center" VerticalOptions="Center">
+            <StackLayout>
+                <Label Text="Enter your nickname and email" TextColor="#298d8f" FontSize="18" HorizontalOptions="Center" />
+                <Entry x:Name="NickEntry" TextColor="#298d8f" Placeholder="Nick" />
+                <Entry x:Name="EmailEntry" TextColor="#298d8f" Placeholder="Email" Keyboard="Email" />
+                <Button Text="Submit" BackgroundColor="#298d8f" TextColor="White" Clicked="OnSubmitClicked"/>
+            </StackLayout>
+        </Frame>
     </VerticalStackLayout>
-
-    <!-- </ScrollView> -->
 
 </ContentPage>

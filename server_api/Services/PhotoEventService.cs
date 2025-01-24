@@ -40,6 +40,16 @@ internal class PhotoEventService(
         return photoEvents;
     }
 
+    public async Task<IEnumerable<PhotoEventLocation>> GetEventLocalizations()
+    {
+        var photoEvents =
+            await appDbContext.Events
+                .Where(e => e.ExpirationDate > DateTime.Now && e.Latitude != null && e.Longitude != null)
+                .Select(e => new PhotoEventLocation { Name = e.Name, Latitude = e.Latitude, Longitude = e.Longitude })
+                .ToListAsync();
+        return photoEvents;
+    }
+
     public async Task<Guid?> AddPhoto(Guid eventId, string email, byte[] photoData)
     {
         var now = DateTime.Now;
@@ -51,9 +61,10 @@ internal class PhotoEventService(
             Console.WriteLine("nie ma usera o takim mailu");
             return null;
         }
+
         var photoEvent = await appDbContext.Events.FirstOrDefaultAsync(e => e.Id == eventId);
         var photo = new Photo
-        { PhotoEvent = photoEvent!, User = user, Path = "", UploadDate = now, LikesCount = 0, IsDeleted = false };
+            { PhotoEvent = photoEvent!, User = user, Path = "", UploadDate = now, LikesCount = 0, IsDeleted = false };
         await appDbContext.Photos.AddAsync(photo);
         await appDbContext.SaveChangesAsync();
         await photoManager.Save(photo.Id, eventId, photoData);

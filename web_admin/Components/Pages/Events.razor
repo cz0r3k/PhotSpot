@@ -10,12 +10,20 @@
 
 @inject PhotoEvent.PhotoEventClient EventClient
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <head>
-     <link href="css/events.css" rel="stylesheet" />
+    <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/js/leafletMap.js"></script>
+    <link href="css/events.css" rel="stylesheet" />
 </head>
 
 <PageTitle>Events</PageTitle>
+
+<div class="map-container" style="margin-bottom: 10px;">
+    <div id="map" style="height: 300px; width: 100%;"></div>
+</div>
 
 <div class="form-container">
     <div class="form-group">
@@ -47,6 +55,8 @@
 @code {
 
     private string _eventName = "";
+    private double? _latitude;
+    private double? _longitude;
     private List<PhotoEventSimple> _photoEvents = [];
 
     protected override async Task OnInitializedAsync()
@@ -55,15 +65,47 @@
         _photoEvents = reply.Event.Select(PhotoEventSimple.FromEventSimple).ToList();
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeLeafletMap", DotNetObjectReference.Create(this));
+        }
+    }
+
     private async Task CreateEvent()
     {
-        Console.WriteLine(_eventName); 
+        Console.WriteLine($"Event Name: {_eventName}, Lat: {_latitude}, Lng: {_longitude}");
         if (!string.IsNullOrEmpty(_eventName))
         {
-            var reply = await EventClient.CreateAsync(new CreateRequest { Name = _eventName, Duration = EventDuration.DurationDay, MinimalTimespan = EventMinimalTimespan.Timespan1H });
+            CreateReply reply;
+            if (_latitude.HasValue && _longitude.HasValue)
+            {   
+                reply = await EventClient.CreateAsync(new CreateRequest
+                {
+                    Name = _eventName,
+                    Duration = EventDuration.DurationDay,
+                    MinimalTimespan = EventMinimalTimespan.Timespan1H,
+                    Location = new Coordinates { Latitude = _latitude.Value.ToString(), Longitude = _longitude.Value.ToString() }
+                });
+            }else{
+                reply = await EventClient.CreateAsync(new CreateRequest
+                {
+                    Name = _eventName,
+                    Duration = EventDuration.DurationDay,
+                    MinimalTimespan = EventMinimalTimespan.Timespan1H
+                });
+            }
             var id = Guid.Parse(reply.Id.Value);
             NavigationManager.NavigateTo($"/event/{id}");
         }
+    }
+
+    [JSInvokable]
+    public void SetMapLocation(double latitude, double longitude)
+    {
+        _latitude = latitude;
+        _longitude = longitude;
     }
 
 }

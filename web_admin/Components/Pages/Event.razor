@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using util.PhotoEvent
 @inject PhotoEvent.PhotoEventClient PhotoEventClient
+@inject NavigationManager Nav
 
 <head>
      <link href="css/single_event.css" rel="stylesheet" />
@@ -13,6 +14,7 @@
 
 <PageTitle>Event</PageTitle>
 
+<button class="btn btn-primary" @onclick="BacktoEventList">Go back to Event List</button>
 @if (_photoEventDetails is not null)
 {
     <table>
@@ -72,6 +74,10 @@
     {
         var eventDetails = await PhotoEventClient.GetDetailsAsync(new UUID { Value = EventId.ToString() });
         _photoEventDetails = PhotoEventDetails.FromDetailsReply(eventDetails);
+    }
+    private void BacktoEventList()
+    {
+        Nav.NavigateTo("/events");
     }
 
     private void UploadPhoto()
