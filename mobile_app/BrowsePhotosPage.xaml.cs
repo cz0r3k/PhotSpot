@@ -26,13 +26,15 @@ namespace QRtest
         private async void ToggleLike(object sender, EventArgs e)
         {
             var imageInfo = ImageCarousel.CurrentItem as ImageInfo;
-            if (imageInfo.IsLiked)
+            if (!imageInfo.IsLiked)
             {
                 await Like();
+                await DisplayAlert("Liked", $"liked {imageInfo.Id}", "OK");
             }
             else
             {
                 await Unlike();
+                await DisplayAlert("Liked", $"unliked {imageInfo.Id}", "OK");
             }
         }
 
