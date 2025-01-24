@@ -6,11 +6,6 @@
 
     <ContentPage.Content>
         <Grid>
-            <!-- <ActivityIndicator x:Name="LoadingIndicator" -->
-            <!--                    IsRunning="False" -->
-            <!--                    IsVisible="False" -->
-            <!--                    VerticalOptions="Center" -->
-            <!--                    HorizontalOptions="Center" /> -->
             <RefreshView x:Name="refreshView" Refreshing="refreshView_Refreshing">
                 <CarouselView x:Name="ImageCarousel"
                               ItemsSource="{Binding Images}"
@@ -34,10 +29,20 @@
                                            WidthRequest="300"
                                            HorizontalOptions="Center"
                                            VerticalOptions="Center" />
-                                    <Label Text="Likes "/>
-                                    <Label Text="{Binding Likes}"/>
-                                    <Label Text="Is Liked "/>
-                                    <Label Text="{Binding IsLikes}"/>
+                                    <Button
+                                        Text="{Binding Likes, StringFormat='Likes: {0}'}"
+                                        Clicked="ToggleLike"
+                                        CornerRadius="10"
+                                        Padding="10,5">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding IsLikes}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="Green" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Button" Binding="{Binding IsLikes}" Value="False">
+                                                <Setter Property="BackgroundColor" Value="Gray" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
                                 </StackLayout>
                             </Frame>
                         </DataTemplate>
