@@ -62,7 +62,6 @@ namespace QRtest
 
             Shell.Current.CurrentItem.SetValue(Shell.TabBarIsVisibleProperty, true);
 
-            barcodeResult.Text = string.Empty;
 
             if (cameraView != null)
             {

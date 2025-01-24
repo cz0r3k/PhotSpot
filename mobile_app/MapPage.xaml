@@ -9,45 +9,21 @@
         <x:Arguments>
             <maps:MapSpan>
                 <x:Arguments>
+                    
                     <sensors:Location>
                         <x:Arguments>
                             <x:Double>52.2296756</x:Double>
                             <x:Double>21.0122287</x:Double>
                         </x:Arguments>
                     </sensors:Location>
-                    <x:Double>0.01</x:Double>
-                    <x:Double>0.01</x:Double>
+                    
+                    <x:Double>0.3</x:Double>
+                    <x:Double>0.3</x:Double>
                 </x:Arguments>
             </maps:MapSpan>
         </x:Arguments>
-
         <maps:Map.Pins>
-            <maps:Pin Label="Pałac Kultury i Nauki"
-                      Address="Plac Defilad 1, 00-901 Warszawa, Polska"
-                      Type="Place">
-                <maps:Pin.Location>
-                    <sensors:Location>
-                        <x:Arguments>
-                            <x:Double>52.231838</x:Double>
-                            <x:Double>21.006724</x:Double>
-                        </x:Arguments>
-                    </sensors:Location>
-                </maps:Pin.Location>
-            </maps:Pin>
-            <maps:Pin Label="Wydział Elektroniki i Technik Informacyjnych PW"
-                      Address="ul. Nowowiejska 15/19, 00-665 Warszawa, Polska"
-                      Type="Place">
-                <maps:Pin.Location>
-                    <sensors:Location>
-                        <x:Arguments>
-                            <x:Double>52.221542</x:Double>
-                            <x:Double>21.007219</x:Double>
-                        </x:Arguments>
-                    </sensors:Location>
-                </maps:Pin.Location>
-            </maps:Pin>
         </maps:Map.Pins>
-        
     </maps:Map>
-    
+
 </ContentPage>

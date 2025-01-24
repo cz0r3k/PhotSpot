@@ -45,3 +45,22 @@ td:nth-child(2) {
     max-width: 100%;
     height: auto;
 }
+.btn-primary {
+    background-color: #32a6a8;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 10px;
+    margin: 10px auto;
+    display: block;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-color: #236061;
+}

@@ -30,12 +30,14 @@
                  StrokeThickness="10"
                  HorizontalOptions="FillAndExpand"
                  VerticalOptions="FillAndExpand" />-->
-
+                       
+            <!--<ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" /> -->
         </Grid>
 
-        <ActivityIndicator x:Name="loadingIndicator" IsRunning="False" IsVisible="False" />
-        
-        <Label x:Name="barcodeResult" FontSize="20" />
+        <ActivityIndicator x:Name="loadingIndicator"
+                   IsRunning="False"
+                   IsVisible="False"
+                   Color="#298d8f" />
 
     </VerticalStackLayout>
 
